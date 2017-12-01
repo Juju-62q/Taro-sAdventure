@@ -1,0 +1,54 @@
+20 port
+Trying 133.6.202.6...
+telnet: connect to address 133.6.202.6: Connection refused
+
+21 port
+Trying 133.6.202.6...
+Connected to ftp.
+Escape character is '^]'.
+220 Welcome to ftp.ice.nuie.nagoya-u.ac.jp
+^]
+530 Please login with USER and PASS.
+
+22 port
+Trying 133.6.202.6...
+Connected to ftp.
+Escape character is '^]'.
+SSH-2.0-OpenSSH_5.3
+^]
+Protocol mismatch.
+Connection closed by foreign host.
+
+23 port
+telnet: connect to address 133.6.202.6: Connection timed out
+Trying 133.6.202.6...
+
+25 port
+telnet: connect to address 133.6.202.6: Connection timed out
+Trying 133.6.202.6...
+
+53 port
+telnet: connect to address 133.6.202.6: Connection timed out
+Trying 133.6.202.6...
+
+70 port
+telnet: connect to address 133.6.202.6: Connection timed out
+Trying 133.6.202.6...
+
+80 port
+Trying 133.6.202.6...
+Connected to ftp.
+Escape character is '^]'.
+Connection closed by foreign host.
+
+110 port
+telnet: connect to address 133.6.202.6: Connection timed out
+Trying 133.6.202.6...
+
+119 port
+telnet: connect to address 133.6.202.6: Connection timed out
+Trying 133.6.202.6...
+
+143 port
+telnet: connect to address 133.6.202.6: Connection timed out
+Trying 133.6.202.6...
