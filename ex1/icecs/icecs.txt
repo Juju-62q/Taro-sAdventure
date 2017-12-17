@@ -1,0 +1,65 @@
+22と80で接続成功
+22:SSH-2.0-OpenSSH_5.3
+80:ver等不明、コマンド入力待ち
+
+icec03.ice.nuie.nagoya-u.ac.jp{sy9076193}60: telnet icecs 21
+Trying 10.11.1.7...
+telnet: connect to address 10.11.1.7: Connection timed out
+
+
+icec03.ice.nuie.nagoya-u.ac.jp{sy9076193}59: telnet icecs 22
+Trying 10.11.1.7...
+Connected to icecs.
+Escape character is '^]'.
+SSH-2.0-OpenSSH_5.3
+
+Protocol mismatch.
+Connection closed by foreign host.
+
+
+icec03.ice.nuie.nagoya-u.ac.jp{sy9076193}61: telnet icecs 23
+Trying 10.11.1.7...
+telnet: connect to address 10.11.1.7: Connection timed out
+
+
+icec03.ice.nuie.nagoya-u.ac.jp{sy9076193}41: telnet icecs 25
+Trying 10.11.1.7...
+telnet: connect to address 10.11.1.7: Connection timed out
+
+
+icec03.ice.nuie.nagoya-u.ac.jp{sy9076193}41: telnet icecs 53
+Trying 10.11.1.7...
+telnet: connect to address 10.11.1.7: Connection timed out
+
+
+icec03.ice.nuie.nagoya-u.ac.jp{sy9076193}62: telnet icecs 70
+Trying 10.11.1.7...
+telnet: connect to address 10.11.1.7: Connection timed out
+
+
+icec03.ice.nuie.nagoya-u.ac.jp{sy9076193}42: telnet icecs 80
+Trying 10.11.1.7...
+Connected to icecs.
+Escape character is '^]'.
+Connection closed by foreign host.
+
+
+icec03.ice.nuie.nagoya-u.ac.jp{sy9076193}42: telnet icecs 110
+Trying 10.11.1.7...
+telnet: connect to address 10.11.1.7: Connection timed out
+
+
+icec03.ice.nuie.nagoya-u.ac.jp{sy9076193}42: telnet icecs 119
+Trying 10.11.1.7...
+telnet: connect to address 10.11.1.7: Connection timed out
+
+
+icec03.ice.nuie.nagoya-u.ac.jp{sy9076193}63: telnet icecs 143
+Trying 10.11.1.7...
+telnet: connect to address 10.11.1.7: Connection timed out
+
+
+icec03.ice.nuie.nagoya-u.ac.jp{sy9076193}43: telnet icecs 443
+Trying 10.11.1.7...
+telnet: connect to address 10.11.1.7: Connection timed out
+

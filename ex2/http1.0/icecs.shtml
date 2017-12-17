@@ -1,6 +1,16 @@
+ssh.ice.nuie.nagoya-u.ac.jp{fh9725579}49: telnet icecs.ice.nuie.nagoya-u.ac.jp 80
 Trying 10.11.1.7...
 Connected to icecs.ice.nuie.nagoya-u.ac.jp.
 Escape character is '^]'.
+GET /index.shtml HTTP/1.0
+
+HTTP/1.1 200 OK
+Date: Fri, 01 Dec 2017 15:01:32 GMT
+Server: Apache
+Accept-Ranges: bytes
+Connection: close
+Content-Type: text/html
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -101,15 +111,15 @@ ICE(Information & Computer Engineering)計算機システムは
   <li>利用規定および利用取り決め
     <ul>
       <li>
-	<a href="use_policy.html">
-	  利用規定
-	</a>
+        <a href="use_policy.html">
+          利用規定
+        </a>
       </li>
 
       <li>
-	<a href="agreement.html">
-	  利用取り決め
-	</a>
+        <a href="agreement.html">
+          利用取り決め
+        </a>
       </li>
     </ul>
   </li>
@@ -140,27 +150,27 @@ ICE(Information & Computer Engineering)計算機システムは
   <li>講義シラバス
     <ul>
       <li>
-	<a href="https://syllabus.i.nagoya-u.ac.jp/i/">
-	  情報学部
-	</a>
+        <a href="https://syllabus.i.nagoya-u.ac.jp/i/">
+          情報学部
+        </a>
       </li>
 
       <li>
-	<a href="http://www.nuie.nagoya-u.ac.jp/syllabus/index.html">
-	  工学部電気電子情報工学科情報工学コース
-	</a>
+        <a href="http://www.nuie.nagoya-u.ac.jp/syllabus/index.html">
+          工学部電気電子情報工学科情報工学コース
+        </a>
       </li>
 
       <li>
-	<a href="https://syllabus.i.nagoya-u.ac.jp/gsi/">
-	  情報学研究科
-	</a>
+        <a href="https://syllabus.i.nagoya-u.ac.jp/gsi/">
+          情報学研究科
+        </a>
       </li>
 
       <li>
-	<a href="http://www.is.nagoya-u.ac.jp/kyomu/syllabus_list">
-	  情報科学研究科
-	</a>
+        <a href="http://www.is.nagoya-u.ac.jp/kyomu/syllabus_list">
+          情報科学研究科
+        </a>
       </li>
     </ul>
   </li>
