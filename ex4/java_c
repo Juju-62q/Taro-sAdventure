@@ -1,0 +1,30 @@
+icec06.ice.nuie.nagoya-u.ac.jp{cq0712303}56: java TestServer
+Server start...
+accept...
+counter=1
+accept...
+counter=2
+accept data>input test 1
+ok to counter=1
+accept data>input test 2
+ok to counter=2
+
+
+icec06.ice.nuie.nagoya-u.ac.jp{cq0712303}57: ./echo_client 127.0.0.1
+Connected to server.
+Input 'quit' to disconnect...
+input test 1
+<<< Sending...
+>>> Received.
+counter=1
+
+
+icec06.ice.nuie.nagoya-u.ac.jp{cq0712303}49: ./echo_client 127.0.0.1
+Connected to server.
+Input 'quit' to disconnect...
+input test 2
+<<< Sending...
+>>> Received.
+counter=2
+
+
