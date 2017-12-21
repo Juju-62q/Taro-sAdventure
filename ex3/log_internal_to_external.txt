@@ -1,0 +1,40 @@
+icesc00{ice}12: ssh cq0712303@icesc20
+cq0712303@icesc20's password: 
+Last login: Thu Dec 14 14:13:38 2017 from icesc11
+#----------------------------------------------
+New system is available
+#----------------------------------------------
+icexs2.ice.nuie.nagoya-u.ac.jp{cq0712303}41: logout
+Connection to icesc20 closed.
+icesc00{ice}13: ping icesc20
+PING icesc20 (192.168.100.20) 56(84) bytes of data.
+64 bytes from icesc20 (192.168.100.20): icmp_seq=1 ttl=63 time=0.382 ms
+64 bytes from icesc20 (192.168.100.20): icmp_seq=2 ttl=63 time=0.395 ms
+64 bytes from icesc20 (192.168.100.20): icmp_seq=3 ttl=63 time=0.379 ms
+^C
+--- icesc20 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2231ms
+rtt min/avg/max/mdev = 0.379/0.385/0.395/0.017 ms
+icesc00{ice}14: ssh root@icesc-gw
+root@icesc-gw's password: 
+Linux icesc11 3.2.0-4-amd64 #1 SMP Debian 3.2.46-1+deb7u1 x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Thu Dec 14 14:15:08 2017 from icec00
+root@icesc11:~# logout
+Connection to icesc-gw closed.
+icesc00{ice}15: ping icesc-gw
+PING icesc-gw (192.168.200.1) 56(84) bytes of data.
+64 bytes from icesc-gw (192.168.200.1): icmp_seq=1 ttl=64 time=0.225 ms
+64 bytes from icesc-gw (192.168.200.1): icmp_seq=2 ttl=64 time=0.184 ms
+64 bytes from icesc-gw (192.168.200.1): icmp_seq=3 ttl=64 time=0.185 ms
+^C
+--- icesc-gw ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2167ms
+rtt min/avg/max/mdev = 0.184/0.198/0.225/0.019 ms
+

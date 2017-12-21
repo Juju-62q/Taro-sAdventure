@@ -1,0 +1,14 @@
+icec02.ice.nuie.nagoya-u.ac.jp{fh9725579}69: nslookup icecs.ice.nuie.nagoya-u.ac.jp
+Server:					     	      10.10.1.2
+Address:					      10.10.1.2#53
+
+Name:						      icecs.ice.nuie.nagoya-u.ac.jp
+Address: 10.11.1.7
+
+icec02.ice.nuie.nagoya-u.ac.jp{fh9725579}70: nslookup www.ice.nuie.nagoya-u.ac.jp
+Server:					     	      10.10.1.2
+Address:					      10.10.1.2#53
+
+www.ice.nuie.nagoya-u.ac.jp			      canonical name = icecs.ice.nuie.nagoya-u.ac.jp.
+Name:						      icecs.ice.nuie.nagoya-u.ac.jp
+Address: 10.11.1.7
