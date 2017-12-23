@@ -1,24 +1,13 @@
 import pygame
 from ScrollGame.ScrollGame import ScrollGame
 from Ranking.Ranking import Ranking
-from pygame.locals import QUIT
+from PyGameScreen import PyGameScreen
 
-class MainMenu:
+class MainMenu(PyGameScreen):
 
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-
-        # init pygame and window
-        pygame.init()
-        pygame.key.set_repeat(5, 5)
-        self.surface = pygame.display.set_mode((self.width, self.height))
-        self.fpsClock = pygame.time.Clock()
-
-    def checkQuit(self):
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
+    def __init__(self, width, height, surface, fpsClock):
+        super().__init__(width, height, surface, fpsClock)
+        self.surface.fill((0, 0, 0))
 
     def mainMenu(self):
         sysFont = pygame.font.SysFont(None, 36)
@@ -27,15 +16,15 @@ class MainMenu:
         flag = False
 
         while (1):
+            self.checkQuit()
             if(not flag):
                 self.surface.blit(play, (200, 250))
                 self.surface.blit(rank, (200, 300))
                 pygame.display.update()
                 flag = True
-            self.checkQuit()
             pressedKey = pygame.key.get_pressed()
             if pressedKey[pygame.K_s]:
-                scrollGame = ScrollGame(self.width, self.height, 10, self.surface, self.fpsClock)
+                scrollGame = ScrollGame(self.width, self.height, self.surface, self.fpsClock, 10)
                 scrollGame.gamePlay()
                 self.surface.fill((0, 0, 0))
                 flag = False
@@ -47,5 +36,12 @@ class MainMenu:
 
 
 if __name__ == '__main__':
-    play = MainMenu(800, 600)
+    pygame.init()
+    pygame.key.set_repeat(5, 5)
+    width = 800
+    height = 600
+    surface = pygame.display.set_mode((width, height))
+    fpsClock = pygame.time.Clock()
+
+    play = MainMenu(width, height, surface, fpsClock)
     play.mainMenu()

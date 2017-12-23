@@ -1,20 +1,11 @@
 import pygame
-from pygame.locals import QUIT
+from PyGameScreen import PyGameScreen
 
-class Ranking:
+class Ranking(PyGameScreen):
 
     def __init__(self, width, height, surface, fpsClock):
-        # pygame and window initialize
-        self.width = width
-        self.height = height
-        self.surface = surface
-        self.fpsClock = fpsClock
+        super().__init__(width, height, surface, fpsClock)
         self.surface.fill((0, 0, 0))
-
-    def checkQuit(self):
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
 
     def Ranking(self):
         # TODO

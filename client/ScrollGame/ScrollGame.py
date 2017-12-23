@@ -1,16 +1,12 @@
 from random import randint
 import pygame
 from pygame.locals import QUIT,Rect
+from PyGameScreen import PyGameScreen
 
-class ScrollGame:
+class ScrollGame(PyGameScreen):
 
-    def __init__(self, width, height, baseSize, surface, fpsClock):
-        # pygame and window initialize
-        self.width = width
-        self.height = height
-        self.baseSize = baseSize
-        self.surface = surface
-        self.fpsClock = fpsClock
+    def __init__(self, width, height, surface, fpsClock, baseSize):
+        super().__init__(width, height, surface, fpsClock)
 
         # game initialize
         # for player
@@ -19,15 +15,11 @@ class ScrollGame:
 
         # for enemy
         self.effects = []
+        self.baseSize = baseSize
 
         # for play zone
         self.playerZoneAbove = self.height / 6
         self.playerZoneBottom = self.height * 2 / 3
-
-    def checkQuit(self):
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
 
     def gamePlay(self):
         # for score
