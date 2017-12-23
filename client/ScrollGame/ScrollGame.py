@@ -1,7 +1,9 @@
 from random import randint
 import pygame
-from pygame.locals import QUIT,Rect
+from pygame.locals import Rect
 from PyGameScreen import PyGameScreen
+from ScrollGame.Player import Player
+from ScrollGame.Score import Score
 
 class ScrollGame(PyGameScreen):
 
@@ -10,28 +12,24 @@ class ScrollGame(PyGameScreen):
 
         # game initialize
         # for player
-        self.playerX = 0
-        self.playerY = self.height / 2
+        self.player = Player(0, height/2, 90, 60, pygame.image.load("GameContents/ship.png"), 20)
 
         # for enemy
-        self.effects = []
+        self.enemies = []
         self.baseSize = baseSize
 
         # for play zone
         self.playerZoneAbove = self.height / 6
         self.playerZoneBottom = self.height * 2 / 3
 
-    def gamePlay(self):
         # for score
-        score = 0
-        scoreUpdate = 10
-        scorePosX = 600
-        scorePosY = 20
+        self.score = Score(0, 10, 600, 20)
 
         # for Images
-        sysFont = pygame.font.SysFont(None, 36)
-        playerImage = pygame.image.load("GameContents/ship.png")
-        bangImage = pygame.image.load("GameContents/bang.png")
+        self.sysFont = pygame.font.SysFont(None, 36)
+        self.bangImage = pygame.image.load("GameContents/bang.png")
+
+    def gamePlay(self):
 
         # for game over
         gameOver = False
@@ -54,40 +52,32 @@ class ScrollGame(PyGameScreen):
             # make enemies
             edge = Rect(self.width - self.baseSize, randint(self.playerZoneAbove, self.playerZoneBottom - self.baseSize),
                         self.baseSize, self.baseSize) if randint(0, 5) == 0 else Rect(0, 0, 0, 0)
-            self.effects.append(edge)
+            self.enemies.append(edge)
 
             # delete if not used
-            if len(self.effects) >= self.width / self.baseSize:
-                del self.effects[0]
+            if len(self.enemies) >= self.width / self.baseSize:
+                del self.enemies[0]
 
             # move enemies
-            self.effects = [x.move(- self.baseSize, 0) for x in self.effects]
+            self.enemies = [x.move(- self.baseSize, 0) for x in self.enemies]
 
             # paint enemies
-            for effect in self.effects:
+            for effect in self.enemies:
                 pygame.draw.rect(self.surface, (255, 255, 0), effect)
 
             # update player
             pressedKey = pygame.key.get_pressed()
-            self.movePlayer(pressedKey)
-            self.surface.blit(playerImage, (self.playerX, self.playerY))
+            self.player.movePlayer(pressedKey, self.width)
+            self.surface.blit(self.player.image, (self.player.rect.x, self.player.rect.y))
 
             # update score
-            score += scoreUpdate
-            scoreImage = sysFont.render("score is {}".format(score),True,(0,0,225))
-            self.surface.blit(scoreImage,(scorePosX,scorePosY))
-
+            scoreImage = self.sysFont.render("score is {}".format(self.score.update()), True, (0, 0, 225))
+            self.surface.blit(scoreImage, (self.score.x, self.score.y))
 
             pygame.display.update()
             self.fpsClock.tick(15)
 
-        # TODO score
-        self.surface.blit(bangImage, (self.playerX, self.playerY - 40))
-        scoreImage = sysFont.render("score is {}".format(score), True, (255, 255, 255))
-        tmp = sysFont.render("please press enter to back menu", True, (255, 255, 255))
-        self.surface.blit(scoreImage, (200, 250))
-        self.surface.blit(tmp, (200, 300))
-        pygame.display.update()
+        self.gameOver()
 
         while(1):
             self.checkQuit()
@@ -97,23 +87,24 @@ class ScrollGame(PyGameScreen):
 
 
     def isGameOver(self):
-        if(self.playerY <= self.playerZoneAbove or self.playerY >= self.playerZoneBottom + 40):
+        if(self.player.rect.y <= self.playerZoneAbove or self.player.rect.y >= self.playerZoneBottom + 40):
             return True
-        for effect in self.effects:
+        for effect in self.enemies:
             if self.isTouchEnemy(effect):
                 return True
         return False
 
     def isTouchEnemy(self, effect):
-        return self.playerX <= effect.left and self.playerX + 75 >= effect.left and self.playerY + 10 <= effect.top and self.playerY + 50 >= effect.top
+        return self.player.rect.x <= effect.left \
+               and self.player.rect.x + 90 >= effect.left \
+               and self.player.rect.y + 10 <= effect.top \
+               and self.player.rect.y + 50 >= effect.top
 
-    def movePlayer(self, pressedKey):
-        if pressedKey[pygame.K_UP]:
-            self.playerY -= self.baseSize * 2
-        elif pressedKey[pygame.K_DOWN]:
-            self.playerY += self.baseSize * 2
-        if pressedKey[pygame.K_RIGHT]:
-            self.playerX += self.baseSize * 2 if self.playerX < self.width - 100 else 0
-        elif pressedKey[pygame.K_LEFT]:
-            self.playerX -= self.baseSize * 2 if self.playerX > 0 else 0
+    def gameOver(self):
+        self.surface.blit(self.bangImage, (self.player.rect.x, self.player.rect.y - 30))
+        scoreImage = self.sysFont.render("score is {}".format(self.score.score), True, (255, 255, 255))
+        tmp = self.sysFont.render("please press enter to back menu", True, (255, 255, 255))
+        self.surface.blit(scoreImage, (200, 250))
+        self.surface.blit(tmp, (200, 300))
+        pygame.display.update()
 
