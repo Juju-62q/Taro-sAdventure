@@ -49,21 +49,22 @@ class ScrollGame(PyGameScreen):
             # paint player zone
             pygame.draw.rect(self.surface,(0,0,0),playerZone)
 
-            # make enemies
-            edge = Rect(self.width - self.baseSize, randint(self.playerZoneAbove, self.playerZoneBottom - self.baseSize),
-                        self.baseSize, self.baseSize) if randint(0, 5) == 0 else Rect(0, 0, 0, 0)
-            self.enemies.append(edge)
+            # make enemy
+            enemySize = randint(1, 5) * self.baseSize
+            enemy = Rect(self.width - enemySize, randint(self.playerZoneAbove, self.playerZoneBottom - enemySize),
+                        enemySize, enemySize) if randint(0, 5) == 0 else Rect(0, 0, 0, 0)
+            self.enemies.append(enemy)
 
             # delete if not used
-            if len(self.enemies) >= self.width / self.baseSize:
+            if len(self.enemies) >= self.width / self.baseSize + 5:
                 del self.enemies[0]
 
             # move enemies
             self.enemies = [x.move(- self.baseSize, 0) for x in self.enemies]
 
             # paint enemies
-            for effect in self.enemies:
-                pygame.draw.rect(self.surface, (255, 255, 0), effect)
+            for enemy in self.enemies:
+                pygame.draw.rect(self.surface, (255, 255, 0), enemy)
 
             # update player
             pressedKey = pygame.key.get_pressed()
@@ -94,11 +95,11 @@ class ScrollGame(PyGameScreen):
                 return True
         return False
 
-    def isTouchEnemy(self, effect):
-        return self.player.rect.x <= effect.left \
-               and self.player.rect.x + 90 >= effect.left \
-               and self.player.rect.y + 10 <= effect.top \
-               and self.player.rect.y + 50 >= effect.top
+    def isTouchEnemy(self, enemy):
+        return self.player.rect.x <= enemy.left \
+               and self.player.rect.x + 90 >= enemy.left \
+               and self.player.rect.y + 10 <= enemy.top \
+               and self.player.rect.y + 50 >= enemy.top
 
     def gameOver(self):
         self.surface.blit(self.bangImage, (self.player.rect.x, self.player.rect.y - 30))
