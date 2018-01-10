@@ -4,6 +4,7 @@ from pygame.locals import Rect
 from PyGameScreen import PyGameScreen
 from ScrollGame.Player import Player
 from ScrollGame.Score import Score
+import socket
 
 class ScrollGame(PyGameScreen):
 
@@ -12,7 +13,7 @@ class ScrollGame(PyGameScreen):
 
         # game initialize
         # for player
-        self.player = Player(0, height/2, 90, 60, pygame.image.load("GameContents/ship.png"), 20)
+        self.player = Player(0, height/2, 90, 60, pygame.image.load("GameContents/ship.png"), 5)
 
         # for enemy
         self.enemies = []
@@ -20,10 +21,10 @@ class ScrollGame(PyGameScreen):
 
         # for play zone
         self.playerZoneAbove = self.height / 6
-        self.playerZoneBottom = self.height * 2 / 3
+        self.playerZoneBottom = self.height * 5 / 6
 
         # for score
-        self.score = Score(0, 10, 600, 20)
+        self.score = Score(0, 1, 600, 20)
 
         # for Images
         self.sysFont = pygame.font.SysFont(None, 36)
@@ -34,7 +35,7 @@ class ScrollGame(PyGameScreen):
         # for game over
         gameOver = False
 
-        playerZone = Rect(0, self.playerZoneAbove, self.width, self.playerZoneBottom)
+        playerZone = Rect(0, self.playerZoneAbove, self.width, self.playerZoneBottom - self.playerZoneAbove)
 
         # main loutine
         while not gameOver:
@@ -52,15 +53,15 @@ class ScrollGame(PyGameScreen):
             # make enemy
             enemySize = randint(1, 5) * self.baseSize
             enemy = Rect(self.width - enemySize, randint(self.playerZoneAbove, self.playerZoneBottom - enemySize),
-                        enemySize, enemySize) if randint(0, 5) == 0 else Rect(0, 0, 0, 0)
+                        enemySize, enemySize) if randint(0, 30) == 0 else Rect(0, 0, 0, 0)
             self.enemies.append(enemy)
 
             # delete if not used
-            if len(self.enemies) >= self.width / self.baseSize + 5:
+            if len(self.enemies) >= 850:#self.width / self.baseSize + 5:
                 del self.enemies[0]
 
             # move enemies
-            self.enemies = [x.move(- self.baseSize, 0) for x in self.enemies]
+            self.enemies = [x.move(- 3, 0) for x in self.enemies]
 
             # paint enemies
             for enemy in self.enemies:
@@ -76,7 +77,7 @@ class ScrollGame(PyGameScreen):
             self.surface.blit(scoreImage, (self.score.x, self.score.y))
 
             pygame.display.update()
-            self.fpsClock.tick(15)
+            self.fpsClock.delay(10)
 
         self.gameOver()
 
@@ -88,7 +89,7 @@ class ScrollGame(PyGameScreen):
 
 
     def isGameOver(self):
-        if(self.player.rect.y <= self.playerZoneAbove or self.player.rect.y >= self.playerZoneBottom + 40):
+        if(self.player.rect.y <= self.playerZoneAbove or self.player.rect.y >= self.playerZoneBottom - 40):
             return True
         for effect in self.enemies:
             if self.isTouchEnemy(effect):
@@ -102,6 +103,14 @@ class ScrollGame(PyGameScreen):
                and self.player.rect.y + 50 >= enemy.top
 
     def gameOver(self):
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client.connect(("127.0.0.1", 50000))
+        client.sendall(b"python test\r\n")
+        response = client.recv(4096)
+        client.sendall(b"python test222\r\n")
+        response = client.recv(4096)
+        client.close()
+
         self.surface.blit(self.bangImage, (self.player.rect.x, self.player.rect.y - 30))
         scoreImage = self.sysFont.render("score is {}".format(self.score.score), True, (255, 255, 255))
         tmp = self.sysFont.render("please press enter to back menu", True, (255, 255, 255))

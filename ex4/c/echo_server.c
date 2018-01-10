@@ -17,7 +17,7 @@ int main( void ) {
   struct sockaddr_in client_addr;
   int    len, buflen;
   char   buf[1024];
-
+while(1){
   /* リスニングソケット作成 */
   if ( ( listening_fd = socket(PF_INET, SOCK_STREAM, 0) ) < 0 ) {
     perror("*** server: socket ***");
@@ -74,5 +74,7 @@ int main( void ) {
   }
 
   /* ソケット切断 */
-  exit( close(connected_fd) );
+  close(connected_fd);
+  //exit( close(connected_fd) );
+}
 }
