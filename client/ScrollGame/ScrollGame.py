@@ -4,7 +4,7 @@ from pygame.locals import Rect
 from PyGameScreen import PyGameScreen
 from ScrollGame.Player import Player
 from ScrollGame.Score import Score
-import socket
+import socket,getpass
 
 class ScrollGame(PyGameScreen):
 
@@ -13,7 +13,7 @@ class ScrollGame(PyGameScreen):
 
         # game initialize
         # for player
-        self.player = Player(0, height/2, 90, 60, pygame.image.load("GameContents/ship.png"), 5)
+        self.player = Player(0, height / 2, 90, 60, pygame.image.load("GameContents/ship.png"), 5)
 
         # for enemy
         self.enemies = []
@@ -51,14 +51,15 @@ class ScrollGame(PyGameScreen):
             pygame.draw.rect(self.surface,(0,0,0),playerZone)
 
             # make enemy
-            enemySize = randint(1, 5) * self.baseSize
-            enemy = Rect(self.width - enemySize, randint(self.playerZoneAbove, self.playerZoneBottom - enemySize),
-                        enemySize, enemySize) if randint(0, 30) == 0 else Rect(0, 0, 0, 0)
-            self.enemies.append(enemy)
+            if randint(0, 30) == 0:
+                enemySize = randint(1, 5) * self.baseSize
+                enemy = Rect(self.width - enemySize, randint(self.playerZoneAbove, self.playerZoneBottom - enemySize), enemySize, enemySize)
+                self.enemies.append(enemy)
 
             # delete if not used
-            if len(self.enemies) >= 850:#self.width / self.baseSize + 5:
-                del self.enemies[0]
+            for i in range(len(self.enemies) - 1):
+                if self.enemies[i].x <= -50:
+                    del self.enemies[i]
 
             # move enemies
             self.enemies = [x.move(- 3, 0) for x in self.enemies]
@@ -103,13 +104,16 @@ class ScrollGame(PyGameScreen):
                and self.player.rect.y + 50 >= enemy.top
 
     def gameOver(self):
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client.connect(("127.0.0.1", 50000))
-        client.sendall(b"python test\r\n")
-        response = client.recv(4096)
-        client.sendall(b"python test222\r\n")
-        response = client.recv(4096)
-        client.close()
+        userName = getpass.getuser()
+
+        #client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        #client.connect(("127.0.0.1", 50000))
+        #client.sendall(b"python test\r\n")
+        #response = client.recv(4096)
+        #client.sendall(b"python test222\r\n")
+        #response = client.recv(4096)
+        #client.close()
+
 
         self.surface.blit(self.bangImage, (self.player.rect.x, self.player.rect.y - 30))
         scoreImage = self.sysFont.render("score is {}".format(self.score.score), True, (255, 255, 255))
