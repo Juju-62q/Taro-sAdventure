@@ -4,11 +4,12 @@ from pygame.locals import Rect
 from PyGameScreen import PyGameScreen
 from ScrollGame.Player import Player
 from ScrollGame.Score import Score
+from ScrollGame.Goki import Goki
 import socket,getpass
 
 class ScrollGame(PyGameScreen):
 
-    def __init__(self, width, height, surface, fpsClock, baseSize):
+    def __init__(self, width, height, surface, fpsClock):
         super().__init__(width, height, surface, fpsClock)
 
         # game initialize
@@ -16,8 +17,8 @@ class ScrollGame(PyGameScreen):
         self.player = Player(0, height / 2, 90, 60, pygame.image.load("GameContents/ship.png"), 5)
 
         # for enemy
-        self.enemies = []
-        self.baseSize = baseSize
+        self.gokis = []
+        self.gokiImage = pygame.image.load("GameContents/goki.png")
 
         # for play zone
         self.playerZoneAbove = self.height / 6
@@ -29,6 +30,8 @@ class ScrollGame(PyGameScreen):
         # for Images
         self.sysFont = pygame.font.SysFont(None, 36)
         self.bangImage = pygame.image.load("GameContents/bang.png")
+        self.image = pygame.image.load("GameContents/block.jpg")
+
 
     def gamePlay(self):
 
@@ -45,28 +48,31 @@ class ScrollGame(PyGameScreen):
             gameOver = self.isGameOver()
 
             # paint back ground
-            self.surface.fill((103,65,49))
+            #self.surface.fill((103,65,49))
+            self.surface.blit(self.image, (0, 0))
 
             # paint player zone
-            pygame.draw.rect(self.surface,(0,0,0),playerZone)
+            pygame.draw.rect(self.surface,(255,255,255),playerZone)
 
             # make enemy
-            if randint(0, 30) == 0:
-                enemySize = randint(1, 5) * self.baseSize
-                enemy = Rect(self.width - enemySize, randint(self.playerZoneAbove, self.playerZoneBottom - enemySize), enemySize, enemySize)
-                self.enemies.append(enemy)
+            if randint(0, 60) == 0:
+                gokiHeight = 50
+                gokiWidth = 64
+                goki = Goki(self.width - gokiWidth, randint(self.playerZoneAbove, self.playerZoneBottom - gokiHeight), gokiWidth, gokiHeight, self.gokiImage, randint(2,5))
+                self.gokis.append(goki)
 
             # delete if not used
-            for i in range(len(self.enemies) - 1):
-                if self.enemies[i].x <= -50:
-                    del self.enemies[i]
+            for i in range(len(self.gokis) - 2):
+                if self.gokis[i].rect.x <= - gokiWidth:
+                    del self.gokis[i]
 
             # move enemies
-            self.enemies = [x.move(- 3, 0) for x in self.enemies]
+            self.gokis = [goki.moveGoki() for goki in self.gokis]
 
-            # paint enemies
-            for enemy in self.enemies:
-                pygame.draw.rect(self.surface, (255, 255, 0), enemy)
+            # paint enemiess
+            for goki in self.gokis:
+                self.surface.blit(self.gokiImage, (goki.rect.x, goki.rect.y))
+                #pygame.draw.rect(self.surface, (255, 255, 0), enemy)
 
             # update player
             pressedKey = pygame.key.get_pressed()
@@ -78,7 +84,7 @@ class ScrollGame(PyGameScreen):
             self.surface.blit(scoreImage, (self.score.x, self.score.y))
 
             pygame.display.update()
-            self.fpsClock.delay(10)
+            self.fpsClock.delay(5)
 
         self.gameOver()
 
@@ -92,16 +98,16 @@ class ScrollGame(PyGameScreen):
     def isGameOver(self):
         if(self.player.rect.y <= self.playerZoneAbove or self.player.rect.y >= self.playerZoneBottom - 40):
             return True
-        for effect in self.enemies:
+        for effect in self.gokis:
             if self.isTouchEnemy(effect):
                 return True
         return False
 
     def isTouchEnemy(self, enemy):
-        return self.player.rect.x <= enemy.left \
-               and self.player.rect.x + 90 >= enemy.left \
-               and self.player.rect.y + 10 <= enemy.top \
-               and self.player.rect.y + 50 >= enemy.top
+        return self.player.rect.x <= enemy.rect.left \
+               and self.player.rect.x + 90 >= enemy.rect.left \
+               and self.player.rect.y + 10 <= enemy.rect.top \
+               and self.player.rect.y + 50 >= enemy.rect.top
 
     def gameOver(self):
         userName = getpass.getuser()

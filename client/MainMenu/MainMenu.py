@@ -24,7 +24,7 @@ class MainMenu(PyGameScreen):
                 flag = True
             pressedKey = pygame.key.get_pressed()
             if pressedKey[pygame.K_s]:
-                scrollGame = ScrollGame(self.width, self.height, self.surface, self.fpsClock, 10)
+                scrollGame = ScrollGame(self.width, self.height, self.surface, self.fpsClock)
                 scrollGame.gamePlay()
                 self.surface.fill((0, 0, 0))
                 flag = False
