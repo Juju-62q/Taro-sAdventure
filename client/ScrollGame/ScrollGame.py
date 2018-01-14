@@ -14,7 +14,7 @@ class ScrollGame(PyGameScreen):
 
         # game initialize
         # for player
-        self.player = Player(0, height / 2, 90, 60, pygame.image.load("GameContents/ship.png"), 5)
+        self.player = Player(0, height / 2, 44, 70, pygame.image.load("GameContents/boy.png"), 5)
 
         # for enemy
         self.gokis = []
@@ -30,15 +30,14 @@ class ScrollGame(PyGameScreen):
         # for Images
         self.sysFont = pygame.font.SysFont(None, 36)
         self.bangImage = pygame.image.load("GameContents/bang.png")
-        self.image = pygame.image.load("GameContents/block.jpg")
+        self.backGround = pygame.image.load("GameContents/block.jpg")
+        self.playZone = pygame.image.load("GameContents/playzone.png")
 
 
     def gamePlay(self):
 
         # for game over
         gameOver = False
-
-        playerZone = Rect(0, self.playerZoneAbove, self.width, self.playerZoneBottom - self.playerZoneAbove)
 
         # main loutine
         while not gameOver:
@@ -49,10 +48,10 @@ class ScrollGame(PyGameScreen):
 
             # paint back ground
             #self.surface.fill((103,65,49))
-            self.surface.blit(self.image, (0, 0))
+            self.surface.blit(self.backGround, (0, 0))
 
             # paint player zone
-            pygame.draw.rect(self.surface,(255,255,255),playerZone)
+            self.surface.blit(self.playZone, (0, self.playerZoneAbove))
 
             # make enemy
             if randint(0, 60) == 0:
@@ -76,7 +75,7 @@ class ScrollGame(PyGameScreen):
 
             # update player
             pressedKey = pygame.key.get_pressed()
-            self.player.movePlayer(pressedKey, self.width)
+            self.player.movePlayer(pressedKey, self.width, self.playerZoneAbove, self.playerZoneBottom)
             self.surface.blit(self.player.image, (self.player.rect.x, self.player.rect.y))
 
             # update score
@@ -96,27 +95,26 @@ class ScrollGame(PyGameScreen):
 
 
     def isGameOver(self):
-        if(self.player.rect.y <= self.playerZoneAbove or self.player.rect.y >= self.playerZoneBottom - 40):
-            return True
         for effect in self.gokis:
-            if self.isTouchEnemy(effect):
+            if self.isTouchGoki(effect):
                 return True
         return False
 
-    def isTouchEnemy(self, enemy):
-        return self.player.rect.x <= enemy.rect.left \
-               and self.player.rect.x + 90 >= enemy.rect.left \
-               and self.player.rect.y + 10 <= enemy.rect.top \
-               and self.player.rect.y + 50 >= enemy.rect.top
+    def isTouchGoki(self, goki):
+        return self.player.rect.x <= goki.rect.x \
+               and self.player.rect.x + self.player.rect.width >= goki.rect.x \
+               and self.player.rect.y <= goki.rect.y \
+               and self.player.rect.y + self.player.rect.height >= goki.rect.y
 
     def gameOver(self):
         userName = getpass.getuser()
+        sendData = "{0} {1}".format(userName, self.score.score).encode("ascii")
 
         #client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #client.connect(("127.0.0.1", 50000))
-        #client.sendall(b"python test\r\n")
+        #client.sendall(4)
         #response = client.recv(4096)
-        #client.sendall(b"python test222\r\n")
+        #client.sendall(sendData)
         #response = client.recv(4096)
         #client.close()
 

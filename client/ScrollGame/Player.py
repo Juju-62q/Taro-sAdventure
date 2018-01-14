@@ -32,11 +32,11 @@ class Player:
     def move(self, move):
         self._move = move
 
-    def movePlayer(self, pressedKey, fieldWidth):
+    def movePlayer(self, pressedKey, fieldWidth, fieldAbove, fieldBottom):
         if pressedKey[pygame.K_UP]:
-            self.rect.y -= self.move
+            self.rect.y -= self.move if self.rect.y > fieldAbove else 0
         elif pressedKey[pygame.K_DOWN]:
-            self.rect.y += self.move
+            self.rect.y += self.move if self.rect.y < fieldBottom - self.rect.height else 0
         if pressedKey[pygame.K_RIGHT]:
             self.rect.x += self.move if self.rect.x < fieldWidth - self.rect.width else 0
         elif pressedKey[pygame.K_LEFT]:
