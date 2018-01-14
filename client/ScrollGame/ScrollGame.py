@@ -47,7 +47,6 @@ class ScrollGame(PyGameScreen):
             gameOver = self.isGameOver()
 
             # paint back ground
-            #self.surface.fill((103,65,49))
             self.surface.blit(self.backGround, (0, 0))
 
             # paint player zone
@@ -57,12 +56,12 @@ class ScrollGame(PyGameScreen):
             if randint(0, 60) == 0:
                 gokiHeight = 50
                 gokiWidth = 64
-                goki = Goki(self.width - gokiWidth, randint(self.playerZoneAbove, self.playerZoneBottom - gokiHeight), gokiWidth, gokiHeight, self.gokiImage, randint(2,5))
+                goki = Goki(self.width - gokiWidth, randint(self.playerZoneAbove, self.playerZoneBottom - gokiHeight), gokiWidth, gokiHeight)
                 self.gokis.append(goki)
 
             # delete if not used
             for i in range(len(self.gokis) - 2):
-                if self.gokis[i].rect.x <= - gokiWidth:
+                if self.gokis[i].x <= - gokiWidth:
                     del self.gokis[i]
 
             # move enemies
@@ -70,8 +69,7 @@ class ScrollGame(PyGameScreen):
 
             # paint enemiess
             for goki in self.gokis:
-                self.surface.blit(self.gokiImage, (goki.rect.x, goki.rect.y))
-                #pygame.draw.rect(self.surface, (255, 255, 0), enemy)
+                self.surface.blit(self.gokiImage, (goki.x, goki.y))
 
             # update player
             pressedKey = pygame.key.get_pressed()
@@ -83,7 +81,7 @@ class ScrollGame(PyGameScreen):
             self.surface.blit(scoreImage, (self.score.x, self.score.y))
 
             pygame.display.update()
-            self.fpsClock.delay(5)
+            self.fpsClock.delay(3)
 
         self.gameOver()
 
@@ -95,16 +93,17 @@ class ScrollGame(PyGameScreen):
 
 
     def isGameOver(self):
-        for effect in self.gokis:
-            if self.isTouchGoki(effect):
+        play = self.player
+        for goki in self.gokis:
+            if self.isTouchGoki(goki):
                 return True
         return False
 
     def isTouchGoki(self, goki):
-        return self.player.rect.x <= goki.rect.x \
-               and self.player.rect.x + self.player.rect.width >= goki.rect.x \
-               and self.player.rect.y <= goki.rect.y \
-               and self.player.rect.y + self.player.rect.height >= goki.rect.y
+        return self.player.rect.x <= goki.hitZone.x + goki.hitZone.width \
+               and self.player.rect.x + self.player.rect.width >= goki.hitZone.x \
+               and self.player.rect.y <= goki.hitZone.y + goki.hitZone.height \
+               and self.player.rect.y + self.player.rect.height >= goki.hitZone.y
 
     def gameOver(self):
         userName = getpass.getuser()
