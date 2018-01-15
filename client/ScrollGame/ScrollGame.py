@@ -24,7 +24,7 @@ class ScrollGame(PyGameScreen):
         self.playerZoneBottom = self.height * 5 / 6
 
         # for score
-        self.score = Score(0, 1, 600, 20)
+        self.score = Score(0, 1, 100, 600, 20)
 
         # for Images
         self.sysFont = pygame.font.SysFont(None, 36)
@@ -52,8 +52,8 @@ class ScrollGame(PyGameScreen):
             self.surface.blit(self.playZone, (0, self.playerZoneAbove))
 
             # make enemy
-            probability = 60 - int(self.score.score / 300) if self.score.score > 100 else 0
-            if randint(0, probability if probability > 30 else 30) == 0:
+            probability = 60 - int(self.score.score / 200)
+            if randint(0, probability if probability > 20 else 20) == 0:
                 gokiHeight = 50
                 gokiWidth = 64
                 goki = Goki(self.width - gokiWidth, randint(self.playerZoneAbove, self.playerZoneBottom - gokiHeight), gokiWidth, gokiHeight)
@@ -75,8 +75,12 @@ class ScrollGame(PyGameScreen):
             pressedKey = pygame.key.get_pressed()
             self.player.movePlayer(pressedKey, self.width, self.playerZoneAbove, self.playerZoneBottom)
             self.player.updatePlayerImage(pressedKey)
+
             self.surface.blit(self.player.getImage(), (self.player.rect.x, self.player.rect.y))
 
+            # kill enemy
+            if self.player.killerFlag:
+                self.checkKillGokis()
             # update score
             scoreImage = self.sysFont.render("score is {}".format(self.score.update()), True, (0, 0, 225))
             self.surface.blit(scoreImage, (self.score.x, self.score.y))
@@ -102,6 +106,18 @@ class ScrollGame(PyGameScreen):
     def isTouchGoki(self, goki):
         return self.player.rect.x <= goki.hitZone.x + goki.hitZone.width \
                and self.player.rect.x + self.player.rect.width >= goki.hitZone.x \
+               and self.player.rect.y <= goki.hitZone.y + goki.hitZone.height \
+               and self.player.rect.y + self.player.rect.height >= goki.hitZone.y
+
+    def checkKillGokis(self):
+        for goki in self.gokis:
+            if self.isKillGoki(goki):
+                self.gokis.remove(goki)
+                self.score.killedBornus()
+
+    def isKillGoki(self, goki):
+        return self.player.rect.x + self.player.rect.width <= goki.hitZone.x + goki.hitZone.width \
+               and self.player.rect.x + self.player.rect.width + self.player.killerWidth >= goki.hitZone.x \
                and self.player.rect.y <= goki.hitZone.y + goki.hitZone.height \
                and self.player.rect.y + self.player.rect.height >= goki.hitZone.y
 

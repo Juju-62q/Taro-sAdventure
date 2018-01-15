@@ -1,9 +1,10 @@
 
 class Score:
 
-    def __init__(self, score, scoreUpdate, x, y):
+    def __init__(self, score, scoreUpdate, bornusPoint, x, y):
         self._score = score
         self._scoreUpdate = scoreUpdate
+        self._bornusPoint = bornusPoint
         self._x = x
         self._y = y
 
@@ -24,6 +25,10 @@ class Score:
         self._scoreUpdate = scoreUpdate
 
     @property
+    def bornusPoint(self):
+        return self._bornusPoint
+
+    @property
     def x(self):
         return self._x
 
@@ -42,3 +47,6 @@ class Score:
     def update(self):
         self.score += self.scoreUpdate
         return self.score
+
+    def killedBornus(self):
+        self.score += self._bornusPoint

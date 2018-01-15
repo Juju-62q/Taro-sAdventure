@@ -6,10 +6,11 @@ class Player:
     def __init__(self, x, y, width, height, normalImage, killerWidth, killerImage, move):
         self._rect = Rect(x, y, width, height)
         self._normalImage = normalImage
-        self._killerRect = (x + width, y, killerWidth, height)
+        self._killerWidth = killerWidth
         self._killerImage = killerImage
         self._killerFlag = False
-        self._killerCount = 0
+        self._killerCount = 3
+        self._count = 0
         self._move = move
 
     @property
@@ -21,12 +22,12 @@ class Player:
         self._rect = rect
 
     @property
-    def killerRect(self):
-        return self._killerRect
+    def killerWidth(self):
+        return self._killerWidth
 
-    @killerRect.setter
-    def killerRect(self, killerRect):
-        self._killerRect = killerRect
+    @killerWidth.setter
+    def killerWidth(self, killerWidth):
+        self._killerWidth = killerWidth
 
     @property
     def killerFlag(self):
@@ -44,6 +45,13 @@ class Player:
     def killerCount(self, killerCount):
         self._killerCount = killerCount
 
+    @property
+    def count(self):
+        return self._count
+
+    @count.setter
+    def count(self, count):
+        self._count = count
     @property
     def move(self):
         return self._move
@@ -67,9 +75,10 @@ class Player:
 
     def updatePlayerImage(self, pressedKey):
         if self.killerFlag:
-            self.killerCount += 1
-        elif pressedKey[pygame.K_z]:
-            self.killerCount = 0
+            self.count += 1
+        elif pressedKey[pygame.K_z] and self.killerCount > 0:
+            self.killerCount -= 1
+            self.count = 0
             self.killerFlag = True
-        if self.killerCount > 100:
+        if self.count > 100:
             self.killerFlag = False
