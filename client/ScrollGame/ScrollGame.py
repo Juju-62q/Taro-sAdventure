@@ -32,8 +32,43 @@ class ScrollGame(PyGameScreen):
         self.backGround = pygame.image.load("GameContents/block.jpg")
         self.playZone = pygame.image.load("GameContents/playzone.png")
 
+    def tutrial(self):
+        self.surface.fill((155, 155, 155))
+
+        tutrial = self.sysFont.render("TUTRIAL", True, (0, 0, 0))
+        self.surface.blit(tutrial, (340, 30))
+
+        moveDescribe = self.sysFont.render("1.Avoid the cockroaches by moving with direction keys", True, (0, 0, 0))
+        self.surface.blit(moveDescribe, (75, 100))
+        self.surface.blit(self.player.getImage(), (200, 150))
+        self.surface.blit(self.gokiImage, (500, 160))
+
+        insecticideDescribe = self.sysFont.render("2.You can use insecticide by pressing Z (3 times)", True, (0, 0, 0))
+        self.surface.blit(insecticideDescribe, (75, 250))
+        self.surface.blit(pygame.image.load("GameContents/boy_killing.png"), (200, 300))
+        self.surface.blit(self.gokiImage, (400, 310))
+
+        difficultyDescribe = self.sysFont.render("3.The degree of difficulty will gradually rise", True, (0, 0, 0))
+        self.surface.blit(difficultyDescribe, (75, 400))
+        self.surface.blit(self.player.getImage(), (200, 450))
+        self.surface.blit(self.gokiImage, (400, 440))
+        self.surface.blit(self.gokiImage, (500, 470))
+        self.surface.blit(self.gokiImage, (450, 490))
+
+        gameStart = self.sysFont.render("Press Enter to start game", True, (0, 0, 0))
+        self.surface.blit(gameStart, (230, 550))
+
+        pygame.display.update()
+
+        while (1):
+            self.checkQuit()
+            pressedKey = pygame.key.get_pressed()
+            if pressedKey[pygame.K_RETURN]:
+                break
+
 
     def gamePlay(self):
+        self.tutrial()
 
         # for game over
         gameOver = False
