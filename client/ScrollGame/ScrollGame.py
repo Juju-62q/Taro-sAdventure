@@ -1,6 +1,5 @@
 from random import randint
 import pygame
-from pygame.locals import Rect
 from PyGameScreen import PyGameScreen
 from ScrollGame.Player import Player
 from ScrollGame.Score import Score
@@ -14,7 +13,7 @@ class ScrollGame(PyGameScreen):
 
         # game initialize
         # for player
-        self.player = Player(0, height / 2, 44, 70, pygame.image.load("GameContents/boy.png"), 5)
+        self.player = Player(0, height / 2, 44, 70, pygame.image.load("GameContents/boy.png"), 157, pygame.image.load("GameContents/boy_killing.png"), 5)
 
         # for enemy
         self.gokis = []
@@ -53,7 +52,8 @@ class ScrollGame(PyGameScreen):
             self.surface.blit(self.playZone, (0, self.playerZoneAbove))
 
             # make enemy
-            if randint(0, 60) == 0:
+            probability = 60 - int(self.score.score / 300) if self.score.score > 100 else 0
+            if randint(0, probability if probability > 30 else 30) == 0:
                 gokiHeight = 50
                 gokiWidth = 64
                 goki = Goki(self.width - gokiWidth, randint(self.playerZoneAbove, self.playerZoneBottom - gokiHeight), gokiWidth, gokiHeight)
@@ -74,7 +74,8 @@ class ScrollGame(PyGameScreen):
             # update player
             pressedKey = pygame.key.get_pressed()
             self.player.movePlayer(pressedKey, self.width, self.playerZoneAbove, self.playerZoneBottom)
-            self.surface.blit(self.player.image, (self.player.rect.x, self.player.rect.y))
+            self.player.updatePlayerImage(pressedKey)
+            self.surface.blit(self.player.getImage(), (self.player.rect.x, self.player.rect.y))
 
             # update score
             scoreImage = self.sysFont.render("score is {}".format(self.score.update()), True, (0, 0, 225))
@@ -93,7 +94,6 @@ class ScrollGame(PyGameScreen):
 
 
     def isGameOver(self):
-        play = self.player
         for goki in self.gokis:
             if self.isTouchGoki(goki):
                 return True

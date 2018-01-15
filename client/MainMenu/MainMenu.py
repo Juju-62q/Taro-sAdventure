@@ -42,6 +42,5 @@ if __name__ == '__main__':
     height = 600
     surface = pygame.display.set_mode((width, height))
     fpsClock = pygame.time
-
     play = MainMenu(width, height, surface, fpsClock)
     play.mainMenu()
