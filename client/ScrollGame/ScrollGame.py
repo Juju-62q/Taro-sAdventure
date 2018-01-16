@@ -86,7 +86,7 @@ class ScrollGame(PyGameScreen):
             # paint player zone
             self.surface.blit(self.playZone, (0, self.playerZoneAbove))
 
-            # make enemy
+            # make goki
             probability = 60 - int(self.score.score / 200)
             if randint(0, probability if probability > 20 else 20) == 0:
                 gokiHeight = 50
@@ -110,16 +110,17 @@ class ScrollGame(PyGameScreen):
             pressedKey = pygame.key.get_pressed()
             self.player.movePlayer(pressedKey, self.width, self.playerZoneAbove, self.playerZoneBottom)
             self.player.updatePlayerImage(pressedKey)
-
             self.surface.blit(self.player.getImage(), (self.player.rect.x, self.player.rect.y))
 
-            # kill enemy
+            # kill goki
             if self.player.killerFlag:
                 self.checkKillGokis()
+
             # update score
             scoreImage = self.sysFont.render("score is {}".format(self.score.update()), True, (0, 0, 225))
             self.surface.blit(scoreImage, (self.score.x, self.score.y))
 
+            # update display
             pygame.display.update()
             self.fpsClock.delay(3)
 
@@ -157,22 +158,25 @@ class ScrollGame(PyGameScreen):
                and self.player.rect.y + self.player.rect.height >= goki.hitZone.y
 
     def gameOver(self):
-        userName = getpass.getuser()
-        sendData = "{0} {1}".format(userName, self.score.score).encode("ascii")
-
-        #client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        #client.connect(("127.0.0.1", 50000))
-        #client.sendall(4)
-        #response = client.recv(4096)
-        #client.sendall(sendData)
-        #response = client.recv(4096)
-        #client.close()
-
+        rank = "01"#self.sendUserNameAndScore()
 
         self.surface.blit(self.bangImage, (self.player.rect.x, self.player.rect.y - 30))
-        scoreImage = self.sysFont.render("score is {}".format(self.score.score), True, (255, 255, 255))
-        tmp = self.sysFont.render("please press enter to back menu", True, (255, 255, 255))
-        self.surface.blit(scoreImage, (200, 250))
-        self.surface.blit(tmp, (200, 300))
+        scoreResult = self.sysFont.render("score is {}".format(self.score.score), True, (255, 255, 255))
+        Rank = self.sysFont.render("your rank was {}".format(rank), True, (255, 255, 255))
+        backMenu = self.sysFont.render("please press enter to back menu", True, (255, 255, 255))
+        self.surface.blit(scoreResult, (200, 250))
+        self.surface.blit(Rank, (200, 300))
+        self.surface.blit(backMenu, (200, 350))
         pygame.display.update()
 
+    def sendUserNameAndScore(self):
+        userName = getpass.getuser()
+        sendData = "{0} {1}".format(userName, self.score.score).encode("ascii")
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client.connect(("127.0.0.1", 50000))
+        client.sendall(b'4')
+        response = client.recv(4096)
+        client.sendall(sendData)
+        response = client.recv(4096)
+        client.close()
+        return response.decode("ascii")
