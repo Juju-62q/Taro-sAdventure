@@ -1,21 +1,249 @@
 import pygame
+import socket
+import pickle
 from PyGameScreen import PyGameScreen
+from pygame.locals import QUIT, MOUSEBUTTONDOWN
+from datetime import datetime
+
 
 class Ranking(PyGameScreen):
 
     def __init__(self, width, height, surface, fpsClock):
         super().__init__(width, height, surface, fpsClock)
-        self.surface.fill((0, 0, 0))
+        self.backColor = (107, 73, 45) # 茶色
+        self.surface.fill(self.backColor)
 
     def Ranking(self):
         # TODO
-        sysFont = pygame.font.SysFont(None, 36)
-        tmp = sysFont.render("please press backspace to back menu", True, (255, 255, 255))
-        self.surface.blit(tmp, (200, 300))
-        pygame.display.update()
+        #host = 'localhost' # 適宜変えること
+        #port = 59630
+        #client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        #client.connect((host, port)) # サーバーに接続
+        #client.sendall(b'3') # サーバーに要求する処理の識別子
+        #resTemp = client.recv(4096).decode('ascii') # receive "connected"
+        #response = client.recv(4096).decode('ascii').replace('\x00', '') # これで足りないかもしれないので注意
 
-        while (1):
-            self.checkQuit()
-            pressedKey = pygame.key.get_pressed()
-            if pressedKey[pygame.K_BACKSPACE]:
-                break
+        response = "userAAAAAAAAAAAA 150000 1515934222.15197\nuserB 1490 1415933222.15197\nuserC 1450 1315933222.15197\nuserD 1420 1315533222.15197\nuserE 1300 1615933222.15197\nuserF 1290 1315936222.15197\nuserG 1230 1315933229.15197\nuser 122000 1315913222.15197\nuserIIIIIIIII 1210 1315033222.15197\nuserJ 1200 1315930222.15197\nuserAA 1190 1312933222.15197\nuserBB 1180 1315933022.15197\nuserCC 1120 1315993222.15197\nuserDD 1100 1315633222.15197\nuserEE 1000 1315933220.15197\nuserFF 980 1319933222.15197\nuserGGGG 970000 1310033222.15197\nuserHH 800 1315933000.15197\nuserII 700 1315939022.15197\nuserJJ 200 1315434222.15197" # テスト用
+        rankingTemp = response.split('\n')
+        #client.close() # サーバーとの通信終了
+
+        
+
+        # ランキングの取得
+        rankFontSize = 36
+        rankingFont = pygame.font.SysFont(None, rankFontSize)
+        rankingData = [] # タプルのリスト
+        for rank, data in enumerate(rankingTemp, 1):  
+            name, score, t = data.split()
+            playTime = (datetime.fromtimestamp(float(t))).strftime('%Y/%m/%d')
+            rankingData.append((str(rank), name, score, playTime))
+
+        sysFont = pygame.font.SysFont(None, 36) # フォントの設定
+        returnObj = ClickedString("please click HERE to back menu", 50, 550) # メインメニューへ戻る関連
+        nextObj = NextString("please click HERE to rank 11 to 20", 450, 550, 0) # ランキング順位切り替え関連
+        returnFlag = False # メインメニューに戻るフラグ
+        mousepos = [] # マウスクリックの座標のリスト
+        while (not returnFlag):
+            self.surface.fill(self.backColor) # 初期化
+            returnObj.blitString(self.surface, (128, 0, 0), (238, 120, 0)) # メインメニューに戻る文章の描画
+            nextObj.blitString(self.surface, (0, 0, 128), (238, 120, 0)) # ページ移動の文章の描画
+            self.blitRanking(rankingData, nextObj.page) # ランキングの描画
+            
+            # 画面トップの描画
+            topFont = pygame.font.SysFont(None, 60)
+            tmp = topFont.render("Rank {0} to {1}".format(nextObj.thisStart, nextObj.thisEnd), True, (255, 234, 0))
+            self.surface.blit(tmp, (270, 50))
+
+            # イベントチェック
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    exit()
+                elif event.type == MOUSEBUTTONDOWN:
+                    mousepos.append(event.pos)
+            
+            # マウスの座標について処理
+            for x, y in mousepos:
+                # メインメニューに戻る
+                if returnObj.x <= x <= returnObj.x+returnObj.width and returnObj.y <= y <= returnObj.y+returnObj.height:
+                    returnFlag = True
+                # ランキング順位切り替え
+                if nextObj.x <= x <= nextObj.x+nextObj.width and nextObj.y <= y <= nextObj.y+nextObj.height:
+                    if nextObj.page == 0:
+                        nextObj.page = 1
+                    else:
+                        nextObj.page = 0
+                    nextObj.strChange() # ページ移動の文章の内容変更
+            mousepos.clear()
+            pygame.display.update()
+
+
+    def blitRanking(self, rankingData, page): # ランキングを表示する関数
+        rankFontSize = 36
+        rankingFont = pygame.font.SysFont(None, rankFontSize)
+        charLength, _ = rankingFont.size('   ') # ランキング表示整形のための文字幅(文字によって横幅異なる)
+
+        limitLength = 16
+        maxLength = 0
+        for i in range(10):
+            if maxLength < len(rankingData[i+10*page][1]):
+                maxLength = len(rankingData[i+10*page][1]) 
+        nameWidth = charLength * maxLength # 整形のための処理
+
+        for i in range(10): # 以下ランキング出力
+            rank, name, score, playTime = rankingData[i+10*page]
+            line = 120 + i*rankFontSize
+            
+            # 順位の表示
+            startRank = 85 + (limitLength-maxLength)*charLength /2
+            rankColor = (208, 175, 76)
+            if page == 0:
+                if i == 0:
+                    rankingFont.set_underline(True)
+                    rankColor = (255, 215, 0)
+                elif i == 1:
+                    rankColor = (192, 192, 192)
+                elif i == 2:
+                    rankColor = (196, 112, 34)
+                elif i == 3:
+                    rankingFont.set_underline(False)                 
+            temp = rankingFont.render(rank, True, rankColor)
+            self.surface.blit(temp, (startRank, line))
+
+            # プレイヤー名の表示
+            startName = startRank + charLength*3
+            nameColor = (254, 242, 99)
+            temp = rankingFont.render(name, True, nameColor)
+            self.surface.blit(temp, (startName, line))
+
+            # スコアの表示
+            startScore = startName + nameWidth
+            scoreColor = (184, 210, 0)
+            temp = rankingFont.render(score, True, scoreColor)
+            self.surface.blit(temp, (startScore, line))
+
+            # プレイ時間の表示
+            startTime = startScore + charLength*6
+            timeColor = (206, 228, 174)
+            temp = rankingFont.render(playTime, True, timeColor)
+            self.surface.blit(temp, (startTime, line))
+
+
+# クリックされる文字列のクラス(画面下部)
+class ClickedString():   
+
+    def __init__(self, string, x, y):
+        self._sysFont = pygame.font.SysFont(None, 30)
+        self._string = string
+        self._width, self._height = self.sysFont.size(string)
+        self._x = x
+        self._y = y
+
+    @property
+    def sysFont(self):
+        return self._sysFont
+
+    @sysFont.setter
+    def sysFont(self, sysFont):
+        self._sysFont = sysFont
+
+
+    @property
+    def string(self):
+        return self._string
+
+    @string.setter
+    def string(self, string):
+        self._string = string
+
+    @property
+    def width(self):
+        return self._width
+
+    @width.setter
+    def width(self, width):
+        self._width = width
+
+    @property
+    def height(self):
+        return self._height
+
+    @height.setter
+    def height(self, height):
+        self._height = height
+
+    @property
+    def x(self):
+        return self._x
+
+    @x.setter
+    def x(self, x):
+        self._x = x
+    
+    @property
+    def y(self):
+        return self._y
+
+    @y.setter
+    def y(self, y):
+        self._y = y
+
+    # 文字列を表示する関数
+    def blitString(self, surface, textColor, backgroundColor):
+        tmp = self.sysFont.render(self.string, True, textColor, backgroundColor)
+        surface.blit(tmp, (self.x, self.y))
+
+
+# 表示する順位を切り替えるには...についてのクラス
+class NextString(ClickedString):
+    
+    def __init__(self, string, x, y, page):
+        super().__init__(string, x, y)
+        self._page = page
+        self._thisStart, self._thisEnd = 1, 10
+        self._nextStart, self._nextEnd = 11, 20
+    
+    @property
+    def page(self):
+        return self._page
+
+    @page.setter
+    def page(self, page):
+        self._page = page
+
+    @property
+    def thisStart(self):
+        return self._thisStart
+
+    @thisStart.setter
+    def thisStart(self, thisStart):
+        self._thisStart = thisStart
+
+    @property
+    def thisEnd(self):
+        return self._thisEnd
+
+    @thisEnd.setter
+    def thisEnd(self, thisEnd):
+        self._thisEnd = thisEnd
+
+    @property
+    def nextStart(self):
+        return self._nextStart
+
+    @nextStart.setter
+    def nextStart(self, nextStart):
+        self._nextStart = nextStart
+
+    @property
+    def nextEnd(self):
+        return self._nextEnd
+
+    @nextEnd.setter
+    def nextEnd(self, nextEnd):
+        self._nextEnd = nextEnd
+
+    def strChange(self): # 表示内容を変更する関数
+        (self.nextStart, self.nextEnd), (self.thisStart, self.thisEnd) = (self.thisStart, self.thisEnd), (self.nextStart, self.nextEnd)
+        self.string = "please click HERE to rank {0} to {1}".format(self.nextStart, self.nextEnd)
+        self.width, self.height = self.sysFont.size(self.string)
