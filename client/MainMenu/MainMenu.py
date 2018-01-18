@@ -1,3 +1,6 @@
+import os, sys
+sys.path.append(os.getcwd())
+
 import pygame
 from ScrollGame.ScrollGame import ScrollGame
 from Ranking.Ranking import Ranking
