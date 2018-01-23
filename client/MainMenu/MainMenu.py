@@ -1,5 +1,4 @@
 import sys,os
-sys.path.append(os.getcwd())
 import socket, getpass
 import pygame
 from ScrollGame.ScrollGame import ScrollGame
@@ -11,46 +10,68 @@ class MainMenu(PyGameScreen):
 
     def __init__(self, width, height, surface, fpsClock):
         super().__init__(width, height, surface, fpsClock)
-        self.surface.fill((0, 0, 0))
+        glay = (51, 51, 51)
+        self.surface.fill(glay)
 
 
     def mainMenu(self):
         # 描画用初期設定
-        sysFont = pygame.font.SysFont(None, 36)
-        play = sysFont.render("PLAY", True, (255, 255, 255))
+        sysFont = pygame.font.SysFont(None, 50)
+        titleFont = pygame.font.SysFont(None, 100)
+        scoreFont = pygame.font.SysFont(None, 36)
+        blue = (0, 0, 255)
+        white = (255, 255, 255)
+
+        play = sysFont.render("PLAY", True, white)
         playWidth, playHeight = sysFont.size("PLAY")
-        rank = sysFont.render("RANKING", True, (255, 255, 255))
+        rank = sysFont.render("RANKING", True, white)
         rankWidth, rankHeight = sysFont.size("RANKING")
-        title = sysFont.render("Dodge Cockroach", True, (255, 0, 0))
+        title = titleFont.render("Terra Formers", True, (255, 0, 0))
         userName = getpass.getuser()
 
-        # ソケット通信
-        #client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        #client.connect(("127.0.0.1", 50000))
-        #client.send("1".encode("ascii"))
-        allHighScore = "test 10000"#client.recv(4096).decode("ascii")
-        allHighScore = allHighScore.replace(" ", " : ")
-        highScore = sysFont.render("{0}".format(allHighScore), True, (255, 255, 255))
+        # ソケット通信 全体のハイスコア
+        temp = ''
+        while temp != 'connected': ##'connected'が返されるまで再送
+            client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            host = 'localhost' #適宜変更
+            port = 59630       #ここも
+            client.connect((host, port))
+            client.send("1".encode("ascii"))
+            temp = client.recv(4096)#.decode("ascii")#connected
+            allHighScore = client.recv(4096).decode("ascii", errors = 'ignore').replace('\x00', '')
+            #print(allHighScore)
+            allHighScore = allHighScore.replace(" ", " : ")
+            #print(allHighScore)
+            aHSWidth, aHSHeight = scoreFont.size(allHighScore)
+            scoreX = self.width - aHSWidth - 50 #ハイスコアのX座標を設定
+            highScore = scoreFont.render("{0}".format(allHighScore), True, white)
+            client.close()
 
-        #client.send("2".encode("ascii"))
-        #temp = client.recv(4096) #"Connected"
-        #client.send(userName.encode("ascii"))
-        userHighScore = "10000"#client.recv(4096).decode("ascii")
-        userScore = userName + " : " + userHighScore
-        user = sysFont.render(userScore, True, (255, 255, 255))
+        #ソケット通信　ユーザーハイスコア
+        temp = ''
+        while temp != 'connected': ##'connected'が返されるまで再送
+            client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client.connect((host, port))
+            client.sendall(b'2')
+            temp = client.recv(4096).decode("ascii")#"Connected"
+            #print(temp)
+            client.sendall(userName.encode("ascii"))
+            userHighScore = client.recv(4096).decode("ascii")
+            userScore = userName + " : " + userHighScore
+            user = scoreFont.render(userScore, True, white)
+            #print(userHighScore)
+            client.close()
 
         flag = False
-
-        #client.close()
 
         while (1):
             #self.checkQuit()
             if(not flag):
-                self.surface.blit(title, (200, 200))
+                self.surface.blit(title, (170, 150))
                 self.surface.blit(play, (200, 250))
-                self.surface.blit(rank, (200, 300))
-                self.surface.blit(highScore, (500, 450))
-                self.surface.blit(user, (500, 500))
+                self.surface.blit(rank, (200, 320))
+                self.surface.blit(highScore, (scoreX, 450))
+                self.surface.blit(user, (scoreX, 500))
                 pygame.display.update()
 
                 for event in pygame.event.get():
@@ -58,12 +79,12 @@ class MainMenu(PyGameScreen):
                     if event.type == MOUSEMOTION:
                         x, y = event.pos
                         if 200 <= x <= 200 + playWidth and 250 <= y <= 250 + playHeight:
-                            play = sysFont.render("PLAY", True, (255, 0, 0))
-                        elif 200 <= x <= 200 + rankWidth and 300 <= y <= 300 + rankHeight:
-                            rank = sysFont.render("RANKING", True, (255, 0, 0))
+                            play = sysFont.render("PLAY", True, blue)
+                        elif 200 <= x <= 200 + rankWidth and 320 <= y <= 320 + rankHeight:
+                            rank = sysFont.render("RANKING", True, blue)
                         else:
-                            play = sysFont.render("PLAY", True, (255, 255, 255))
-                            rank = sysFont.render("RANKING", True, (255, 255, 255))
+                            play = sysFont.render("PLAY", True, white)
+                            rank = sysFont.render("RANKING", True, white)
 
                     if event.type == MOUSEBUTTONDOWN and event.button == 1:
                         x, y = event.pos
@@ -96,6 +117,7 @@ class MainMenu(PyGameScreen):
 
 
 if __name__ == '__main__':
+    #sys.path.append(os.getcwd())
     pygame.init()
     pygame.key.set_repeat(5, 5)
     width = 800

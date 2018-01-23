@@ -8,7 +8,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#define PORT 50000    // ポート番号
+#define PORT 59632    // ポート番号
 
 int main(int argc, char *argv[]) {
   struct sockaddr_in addr;

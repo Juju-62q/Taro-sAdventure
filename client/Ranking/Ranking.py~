@@ -21,12 +21,12 @@ class Ranking(PyGameScreen):
         client.sendall(b'3') # サーバーに要求する処理の識別子
         resTemp = client.recv(4096).decode('ascii') # "connected"を受け取る(タイミングの問題でバグる)
         print(resTemp) #debug
-        response = client.recv(4096).decode('ascii', errors = 'ignore').replace('\x00', '') # これで足りないかもしれないので注意
+        response = client.recv(4096).decode('ascii').replace('\x00', '') # これで足りないかもしれないので注意
         print(response) #debug
 
         #response = "userAAAAAAAAAAAA 150000 1515934222.15197\nuserB 1490 1415933222.15197\nuserC 1450 1315933222.15197\nuserD 1420 1315533222.15197\nuserE 1300 1615933222.15197\nuserF 1290 1315936222.15197\nuserG 1230 1315933229.15197\nuser 122000 1315913222.15197\nuserIIIIIIIII 1210 1315033222.15197\nuserJ 1200 1315930222.15197\nuserAA 1190 1312933222.15197\nuserBB 1180 1315933022.15197\nuserCC 1120 1315993222.15197\nuserDD 1100 1315633222.15197\nuserEE 1000 1315933220.15197\nuserFF 980 1319933222.15197\nuserGGGG 970000 1310033222.15197\nuserHH 800 1315933000.15197\nuserII 700 1315939022.15197\nuserJJ 200 1315434222.15197" # テスト用
 
-        rankingTemp = response.splitlines()
+        rankingTemp = response.split('\n').splitlines()
         client.close() # サーバーとの通信終了
 
         
