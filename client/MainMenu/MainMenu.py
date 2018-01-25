@@ -101,7 +101,7 @@ class MainMenu(PyGameScreen):
                         if 200 <= x <= 200 + playWidth and 250 <= y <= 250 + playHeight:
                             click = "PLAY"
                             flag = True
-                        elif 200 <= x <= 200 + rankWidth and 300 <= y <= 300 + rankHeight:
+                        elif 200 <= x <= 200 + rankWidth and 320 <= y <= 320 + rankHeight:
                             click = "RANKING"
                             flag = True
 
