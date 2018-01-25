@@ -29,47 +29,53 @@ class MainMenu(PyGameScreen):
         rankWidth, rankHeight = sysFont.size("RANKING")
         title = titleFont.render("Taro's Adventure", True, (255, 0, 0))
         userName = getpass.getuser()
-
+        
+        userScoreFlag = False
+        highScoreFlag = False
         flag = False
 
         while (1):
             #self.checkQuit()
             if(not flag):
             # ソケット通信 全体のハイスコア
-                temp = ''
-                while temp != 'connected': ##'connected'が返されるまで再送
-                    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    host = 'localhost' #適宜変更
-                    port = 59630       #ここも
-                    client.connect((host, port))
-                    client.send("1".encode("ascii"))
-                    temp = client.recv(4096).decode("ascii")#connected
-                    allHighScore = client.recv(4096)
-                    allHighScore = allHighScore.decode("ascii").replace('\x00','')
-                    #print(allHighScore)
-                    allHighScore = allHighScore.replace(" ", " : ")
-                    #print(allHighScore)
-                    aHSWidth, aHSHeight = scoreFont.size(allHighScore)
-                    scoreX = self.width - aHSWidth - 50 #ハイスコアのX座標を設定
-                    highScore = scoreFont.render("{0}".format(allHighScore), True, white)
-                    client.close()
+                if(not highScoreFlag):
+                    temp = ''
+                    while temp != 'connected': ##'connected'が返されるまで再送
+                        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        host = 'localhost' #適宜変更
+                        port = 59630       #ここも
+                        client.connect((host, port))
+                        client.send("1".encode("ascii"))
+                        temp = client.recv(4096).decode("ascii")#connected
+                        allHighScore = client.recv(4096)
+                        allHighScore = allHighScore.decode("ascii").replace('\x00','')
+                        #print(allHighScore)
+                        allHighScore = allHighScore.replace(" ", " : ")
+                        #print(allHighScore)
+                        aHSWidth, aHSHeight = scoreFont.size(allHighScore)
+                        scoreX = self.width - aHSWidth - 50 #ハイスコアのX座標を設定
+                        highScore = scoreFont.render("{0}".format(allHighScore), True, white)
+                        client.close()
+                        highScoreFlag = True
 
             #ソケット通信　ユーザーハイスコア
-                temp = ''
-                while temp != 'connected': ##'connected'が返されるまで再送
-                    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    client.connect((host, port))
-                    client.sendall(b'2')
-                    temp = client.recv(4096).decode("ascii")#"Connected"
-                    #print(temp)
-                    client.sendall(userName.encode("ascii"))
-                    userHighScore = client.recv(4096).decode("ascii")
-                    userScore = userName + " : " + userHighScore
-                    uHSWidth, uHSHeight = scoreFont.size(userScore)
-                    uscoreX = self.width - uHSWidth - 50 #ユーザースコアのX座標
-                    user = scoreFont.render(userScore, True, white)
-                    #print(userHighScore)
-                    client.close()
+                if(not userScoreFlag):
+                    temp = ''
+                    while temp != 'connected': ##'connected'が返されるまで再送
+                        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        client.connect((host, port))
+                        client.sendall(b'2')
+                        temp = client.recv(4096).decode("ascii")#"Connected"
+                        #print(temp)
+                        client.sendall(userName.encode("ascii"))
+                        userHighScore = client.recv(4096).decode("ascii")
+                        userScore = userName + " : " + userHighScore
+                        uHSWidth, uHSHeight = scoreFont.size(userScore)
+                        uscoreX = self.width - uHSWidth - 50 #ユーザースコアのX座標
+                        user = scoreFont.render(userScore, True, white)
+                        #print(userHighScore)
+                        client.close()
+                        userScoreFlag = True
                 
                 self.surface.blit(title, (120, 150))
                 self.surface.blit(play, (200, 250))
@@ -112,6 +118,8 @@ class MainMenu(PyGameScreen):
                     scrollGame.gamePlay()
                     self.surface.fill((0, 0, 0))
                     flag = False
+                    userScoreFlag = False
+                    highScoreFlag = False
             #elif pressedKey[pygame.K_r]:
                 elif click == "RANKING":
                     ranking = Ranking(self.width, self.height, self.surface, self.fpsClock)
