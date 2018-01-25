@@ -27,7 +27,7 @@ class MainMenu(PyGameScreen):
         playWidth, playHeight = sysFont.size("PLAY")
         rank = sysFont.render("RANKING", True, white)
         rankWidth, rankHeight = sysFont.size("RANKING")
-        title = titleFont.render("Terra Formers", True, (255, 0, 0))
+        title = titleFont.render("Taro's Adventure", True, (255, 0, 0))
         userName = getpass.getuser()
 
         # ソケット通信 全体のハイスコア
@@ -60,6 +60,8 @@ class MainMenu(PyGameScreen):
             client.sendall(userName.encode("ascii"))
             userHighScore = client.recv(4096).decode("ascii")
             userScore = userName + " : " + userHighScore
+            uHSWidth, uHSHeight = scoreFont.size(userScore)
+            uscoreX = self.width - uHSWidth - 50 #ユーザースコアのX座標
             user = scoreFont.render(userScore, True, white)
             #print(userHighScore)
             client.close()
@@ -69,11 +71,11 @@ class MainMenu(PyGameScreen):
         while (1):
             #self.checkQuit()
             if(not flag):
-                self.surface.blit(title, (170, 150))
+                self.surface.blit(title, (120, 150))
                 self.surface.blit(play, (200, 250))
                 self.surface.blit(rank, (200, 320))
                 self.surface.blit(highScore, (scoreX, 450))
-                self.surface.blit(user, (scoreX, 500))
+                self.surface.blit(user, (uscoreX, 500))
                 pygame.display.update()
 
                 for event in pygame.event.get():

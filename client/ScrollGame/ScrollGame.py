@@ -82,7 +82,7 @@ class ScrollGame(PyGameScreen):
             if self.player.killerFlag:
                 self.checkKillGokis()
             # update score
-            scoreImage = self.sysFont.render("score is {}".format(self.score.update()), True, (0, 0, 225))
+            scoreImage = self.sysFont.render("score is {}".format(self.score.update()), True, (255, 255, 225))
             self.surface.blit(scoreImage, (self.score.x, self.score.y))
 
             pygame.display.update()
@@ -129,7 +129,7 @@ class ScrollGame(PyGameScreen):
         client.connect(("127.0.0.1", 59630))
         client.sendall(b'4')
         response = client.recv(4096)
-        print(response)
+        #print(response)
         client.sendall(sendData)
         response = client.recv(4096).decode("ascii").replace("\x00","")
         client.close()

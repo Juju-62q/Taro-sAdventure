@@ -1,6 +1,7 @@
 import pygame
 import socket
-import pickle
+import sys
+import getpass
 from PyGameScreen import PyGameScreen
 from pygame.locals import QUIT, MOUSEBUTTONDOWN
 from datetime import datetime
@@ -19,13 +20,13 @@ class Ranking(PyGameScreen):
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect((host, port)) # サーバーに接続
         client.sendall(b'3') # サーバーに要求する処理の識別子
-        resTemp = client.recv(4096).decode('ascii') # "connected"を受け取る(タイミングの問題でバグる)
-        print(resTemp) #debug
-        response = client.recv(4096).decode('ascii', errors = 'ignore').replace('\x00', '') # これで足りないかもしれないので注意
-        print(response) #debug
-
-        #response = "userAAAAAAAAAAAA 150000 1515934222.15197\nuserB 1490 1415933222.15197\nuserC 1450 1315933222.15197\nuserD 1420 1315533222.15197\nuserE 1300 1615933222.15197\nuserF 1290 1315936222.15197\nuserG 1230 1315933229.15197\nuser 122000 1315913222.15197\nuserIIIIIIIII 1210 1315033222.15197\nuserJ 1200 1315930222.15197\nuserAA 1190 1312933222.15197\nuserBB 1180 1315933022.15197\nuserCC 1120 1315993222.15197\nuserDD 1100 1315633222.15197\nuserEE 1000 1315933220.15197\nuserFF 980 1319933222.15197\nuserGGGG 970000 1310033222.15197\nuserHH 800 1315933000.15197\nuserII 700 1315939022.15197\nuserJJ 200 1315434222.15197" # テスト用
-
+        #resTemp = client.recv(4096).decode('ascii') # 引数4096だと, "connected"を受け取る(タイミングの問題でバグる)
+        expectedLen = len( 'connected'.encode('ascii') ) # (最大で)"connected"と同じ文字数のみ受け取る
+        resTemp = client.recv(expectedLen).decode('ascii')
+        if(resTemp != 'connected'): # エラー処理
+            print('[Error] expected to receive "connected" but receive "{}"'.format(resTemp), file=sys.stderr)
+            sys.exit()
+        response = client.recv(4096).decode('ascii', errors = 'ignore').replace('\x00', '')
         rankingTemp = response.splitlines()
         client.close() # サーバーとの通信終了
 
@@ -36,7 +37,6 @@ class Ranking(PyGameScreen):
         rankingFont = pygame.font.SysFont(None, rankFontSize)
         rankingData = [] # タプルのリスト
         for rank, data in enumerate(rankingTemp, 1):
-            print(data)
             name, score, t = data.split()
             playTime = (datetime.fromtimestamp(float(t))).strftime('%Y/%m/%d')
             rankingData.append((str(rank), name, score, playTime))
@@ -85,52 +85,61 @@ class Ranking(PyGameScreen):
         rankFontSize = 36
         rankingFont = pygame.font.SysFont(None, rankFontSize)
         charLength, _ = rankingFont.size('   ') # ランキング表示整形のための文字幅(文字によって横幅異なる)
+        userName = getpass.getuser()
 
         limitLength = 16
         maxLength = 0
-        for i in range(10):
+        for i in range(10): # 最長のプレイヤー名を求める
             if maxLength < len(rankingData[i+10*page][1]):
                 maxLength = len(rankingData[i+10*page][1]) 
         nameWidth = charLength * maxLength # 整形のための処理
+        
+        
+        def blitItem(item, start, line, color): # ランキングの各要素を出力する補助関数
+            temp = rankingFont.render(item, True, color)
+            self.surface.blit(temp, (start, line))
 
         for i in range(10): # 以下ランキング出力
             rank, name, score, playTime = rankingData[i+10*page]
             line = 120 + i*rankFontSize
+
+            if name == userName: # ユーザー名がランキング上にあるかチェック
+                rankingFont.set_underline(True)
+                userFlag = True
+            else:
+                rankingFont.set_underline(False)
+                userFlag = False
             
             # 順位の表示
             startRank = 85 + (limitLength-maxLength)*charLength /2
-            rankColor = (208, 175, 76)
-            if page == 0:
+            rankColor = (255, 255, 255)#(208, 175, 76)
+            if userFlag: # ユーザーの順位の色を変える
+                rankColor = (0, 200, 0)
+            elif page == 0: #1位～3位の色を変える
                 if i == 0:
-                    rankingFont.set_underline(True)
                     rankColor = (255, 215, 0)
                 elif i == 1:
                     rankColor = (192, 192, 192)
                 elif i == 2:
                     rankColor = (196, 112, 34)
-                elif i == 3:
-                    rankingFont.set_underline(False)                 
-            temp = rankingFont.render(rank, True, rankColor)
-            self.surface.blit(temp, (startRank, line))
+            blitItem(rank, startRank, line, rankColor)                 
 
             # プレイヤー名の表示
             startName = startRank + charLength*3
             nameColor = (254, 242, 99)
-            temp = rankingFont.render(name, True, nameColor)
-            self.surface.blit(temp, (startName, line))
-
+            blitItem(name, startName, line, nameColor)
 
             # スコアの表示
             startScore = startName + nameWidth
             scoreColor = (184, 210, 0)
-            temp = rankingFont.render(score, True, scoreColor)
-            self.surface.blit(temp, (startScore, line))
+            blitItem(score, startScore, line, scoreColor)
 
             # プレイ時間の表示
             startTime = startScore + charLength*6
             timeColor = (206, 228, 174)
-            temp = rankingFont.render(playTime, True, timeColor)
-            self.surface.blit(temp, (startTime, line))
+            blitItem(playTime, startTime, line, timeColor)
+
+
 
 
 # クリックされる文字列のクラス(画面下部)

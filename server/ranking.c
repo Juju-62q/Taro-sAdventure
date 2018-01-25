@@ -90,10 +90,7 @@ int main(int argc, char *argv[]) {
             
       printf( "<<< Sending...\n" );
       printf( "%s\n", buf);
-      /* if ( write( connected_fd, buf, sizeof(buf) ) < 0 ) {
-	break;
-	}*/  
-      //write(connected_fd, "aaaaa 100 123",200);
+      
       write( connected_fd, buf, strlen(buf));
       close(connected_fd); 
       break;

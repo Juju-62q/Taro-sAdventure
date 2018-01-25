@@ -1,5 +1,5 @@
 /*
- * chat_server.c
+ * 
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,16 +8,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#define PORT 59631  /* ポート番号 */
-/*
-void highscore(char **name){
-  FILE *fp=fopen("ranking.txt","r");
-  int score;
-  int time;
-  fscanf(fp,"%s %d %d" ,name,&score,&time);
-  //return name;
-}
-*/
+#define PORT 59631  /* ポート番号 *///59631
 
 int main( void ) {
   int    i;
@@ -86,9 +77,12 @@ int main( void ) {
     printf( ">>> Received (size:%d).\n", buflen );
     // write( 1, buf, buflen );
     */
-    
-    //if(strcmp(buf,"score\n")==0){
-    FILE *fp=fopen("ranking.txt","r");
+    FILE *fp;
+    if((fp=fopen("ranking.txt","r"))==NULL){
+      printf("filr open error!!\n");
+      exit(EXIT_FAILURE);
+    }
+    //FILE *fp=fopen("ranking.txt","r");
     int score;
     int time;
 
@@ -109,19 +103,19 @@ int main( void ) {
     fclose(fp);
    
     printf( "<<< Sending...\n" );
-    /*
-     if ( write( connected_fd, buf, buflen ) < 0 ) {
-     break;
+    
+    if ( write( connected_fd, buf, 100 ) < 0 ) {
+      break;
     }
-    */
-    write( connected_fd, buf, 100 );
+    
+    //write( connected_fd, buf, 100 );
     break;
   }
 
   /* ソケット切断 */
   //exit( close(connected_fd) );
   close(connected_fd);
-}
+  }
 }
 
 

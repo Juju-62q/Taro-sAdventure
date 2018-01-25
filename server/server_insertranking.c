@@ -1,5 +1,5 @@
 /*
- * chat_server.c
+ * server_insertranking.c
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,7 +10,7 @@
 
 #define NUM 20
 #define PORT 59634  /* ポート番号 */
-
+//59634
 int main( void ) {
   int    i;
   int    connected_fd, listening_fd;
@@ -64,10 +64,10 @@ int main( void ) {
 
   /* データの送受信 */
   while (1) {
-    /*if ( ( buflen = read( connected_fd, buf, sizeof(buf) ) ) <= 0 ) {
+    if ( ( buflen = read( connected_fd, buf, sizeof(buf) ) ) <= 0 ) {
       break;
-      }*/
-    buflen = read( connected_fd, buf, sizeof(buf));
+    }
+    //buflen = read( connected_fd, buf, sizeof(buf));
     printf( ">>> Received (size:%d).\n", buflen );
     
     char *new;
@@ -84,7 +84,12 @@ int main( void ) {
     //newtime=atoi(time2);
 
     //ranking読込み
-    FILE *fp=fopen("ranking.txt","r");
+    
+    FILE *fp;
+    if((fp=fopen("ranking.txt","r"))==NULL){
+      printf("filr open error!!\n");
+      exit(EXIT_FAILURE);
+    }
     int scores[NUM];
     char name[NUM][100];
     char time[NUM][100];
@@ -134,15 +139,19 @@ int main( void ) {
       }
     
       //ranking.txtの書き換え
-      FILE *fp2=fopen("ranking.txt","w");
+      FILE *fp2;
+      if((fp2=fopen("ranking.txt","w"))==NULL){
+	printf("file open error!!\n");
+	exit(EXIT_FAILURE);
+      }
+
       for(i=0;i<NUM;i++){
 	fprintf(fp,"%s %d %s\n",name[i],scores[i],time[i]);
       }
       
       fclose(fp2);
       
-      
-      write( 1, buf, buflen );
+      //write( 1, buf, buflen );
       printf( "<<< Sending...\n" );
       char bufret[100];
       strcpy(bufret,"");
