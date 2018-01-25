@@ -131,14 +131,16 @@ class ScrollGame(PyGameScreen):
         response = client.recv(4096)
         print(response)
         client.sendall(sendData)
-        response = client.recv(4096)
+        response = client.recv(4096).decode("ascii").replace("\x00","")
         client.close()
 
 
         self.surface.blit(self.bangImage, (self.player.rect.x, self.player.rect.y - 30))
         scoreImage = self.sysFont.render("score is {}".format(self.score.score), True, (255, 255, 255))
-        tmp = self.sysFont.render("please press enter to back menu", True, (255, 255, 255))
+        rankImage = self.sysFont.render("your rank is {}".format(response), True, (255, 255, 255))
+        backToMenu = self.sysFont.render("please press enter to back menu", True, (255, 255, 255))
         self.surface.blit(scoreImage, (200, 250))
-        self.surface.blit(tmp, (200, 300))
+        self.surface.blit(rankImage, (200, 300))
+        self.surface.blit(backToMenu, (200, 350))
         pygame.display.update()
 
