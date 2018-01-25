@@ -1,4 +1,5 @@
 import sys,os
+sys.path.append(os.getcwd())
 import socket, getpass
 import pygame
 from ScrollGame.ScrollGame import ScrollGame
@@ -37,8 +38,9 @@ class MainMenu(PyGameScreen):
             port = 59630       #ここも
             client.connect((host, port))
             client.send("1".encode("ascii"))
-            temp = client.recv(4096)#.decode("ascii")#connected
-            allHighScore = client.recv(4096).decode("ascii", errors = 'ignore').replace('\x00', '')
+            temp = client.recv(4096).decode("ascii")#connected
+            allHighScore = client.recv(4096)
+            allHighScore = allHighScore.decode("ascii").replace('\x00','')
             #print(allHighScore)
             allHighScore = allHighScore.replace(" ", " : ")
             #print(allHighScore)
@@ -117,7 +119,6 @@ class MainMenu(PyGameScreen):
 
 
 if __name__ == '__main__':
-    #sys.path.append(os.getcwd())
     pygame.init()
     pygame.key.set_repeat(5, 5)
     width = 800
