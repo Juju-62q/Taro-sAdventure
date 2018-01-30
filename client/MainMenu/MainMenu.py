@@ -37,6 +37,7 @@ class MainMenu(PyGameScreen):
         while (1):
             #self.checkQuit()
             if(not flag):
+                self.surface.fill((0, 0, 0))
             # ソケット通信 全体のハイスコア
                 if(not highScoreFlag):
                     temp = ''
@@ -48,6 +49,7 @@ class MainMenu(PyGameScreen):
                         client.send("1".encode("ascii"))
                         temp = client.recv(4096).decode("ascii")#connected
                         allHighScore = client.recv(4096)
+                        #print(allHighScore)
                         allHighScore = allHighScore.decode("ascii").replace('\x00','')
                         #print(allHighScore)
                         allHighScore = allHighScore.replace(" ", " : ")
