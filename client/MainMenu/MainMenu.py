@@ -47,13 +47,10 @@ class MainMenu(PyGameScreen):
                         port = 59630       #ここも
                         client.connect((host, port))
                         client.send("1".encode("ascii"))
-                        temp = client.recv(4096).decode("ascii")#connected
+                        temp = client.recv(4096).decode("ascii").replace('\x00','')#connected
                         allHighScore = client.recv(4096)
-                        #print(allHighScore)
                         allHighScore = allHighScore.decode("ascii").replace('\x00','')
-                        #print(allHighScore)
                         allHighScore = allHighScore.replace(" ", " : ")
-                        #print(allHighScore)
                         aHSWidth, aHSHeight = scoreFont.size(allHighScore)
                         scoreX = self.width - aHSWidth - 50 #ハイスコアのX座標を設定
                         highScore = scoreFont.render("{0}".format(allHighScore), True, white)
@@ -67,15 +64,13 @@ class MainMenu(PyGameScreen):
                         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         client.connect((host, port))
                         client.sendall(b'2')
-                        temp = client.recv(4096).decode("ascii")#"Connected"
-                        #print(temp)
+                        temp = client.recv(4096).decode("ascii").replace('\x00','')#"Connected"
                         client.sendall(userName.encode("ascii"))
-                        userHighScore = client.recv(4096).decode("ascii")
+                        userHighScore = client.recv(4096).decode("ascii").replace('\x00','')
                         userScore = userName + " : " + userHighScore
                         uHSWidth, uHSHeight = scoreFont.size(userScore)
                         uscoreX = self.width - uHSWidth - 50 #ユーザースコアのX座標
                         user = scoreFont.render(userScore, True, white)
-                        #print(userHighScore)
                         client.close()
                         userScoreFlag = True
                 
@@ -111,9 +106,6 @@ class MainMenu(PyGameScreen):
                         pygame.quit()
                         exit()
 
-                #flag = True
-            #pressedKey = pygame.key.get_pressed()
-            #if pressedKey[pygame.K_s]:
             else:
                 if click == "PLAY":
                     scrollGame = ScrollGame(self.width, self.height, self.surface, self.fpsClock)
@@ -122,7 +114,6 @@ class MainMenu(PyGameScreen):
                     flag = False
                     userScoreFlag = False
                     highScoreFlag = False
-            #elif pressedKey[pygame.K_r]:
                 elif click == "RANKING":
                     ranking = Ranking(self.width, self.height, self.surface, self.fpsClock)
                     ranking.Ranking()
