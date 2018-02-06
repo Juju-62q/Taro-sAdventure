@@ -1,8 +1,0 @@
-cec06.ice.nuie.nagoya-u.ac.jp{cq0712303}59: ./echo_server 
-Waiting for connections from a client.
-Accepted connection.
-
-icec06.ice.nuie.nagoya-u.ac.jp{cq0712303}51: java TestClient "127.0.0.1" 50000
-input test
-
-
