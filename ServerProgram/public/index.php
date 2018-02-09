@@ -1,7 +1,15 @@
 <?php
 echo "Hello! World!<br>";
-$mysql = new mysqli($_ENV['DATABASE_HOST'], $_ENV['DATABASE_USER'],
-	$_ENV['DATABASE_PASSWORD'], $_ENV['DATABASE_NAME']);
+echo $_ENV['MYSQL_HOST'];
+echo "<br>";
+echo $_ENV['MYSQL_USER'];
+echo "<br>";
+echo $_ENV['MYSQL_PASSWORD'];
+echo "<br>";
+echo $_ENV['MYSQL_DATABASE'];
+echo "<br>";
+$mysql = new mysqli($_ENV['MYSQL_HOST'], $_ENV['MYSQL_USER'],
+	$_ENV['MYSQL_PASSWORD'], $_ENV['MYSQL_DATABASE']);
 if (!$mysql) {
 	echo "Error: Unable to connect to MySQL." . PHP_EOL;
 	echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;

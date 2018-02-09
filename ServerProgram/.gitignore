@@ -72,3 +72,4 @@ fabric.properties
 
 #envfile
 docker/.env
+docker/misc*
