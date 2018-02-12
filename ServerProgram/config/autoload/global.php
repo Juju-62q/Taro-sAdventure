@@ -13,4 +13,10 @@
 
 return [
     // ...
+    'db' =>[
+        'driver' => 'Pdo',
+        'dsn' => 'mysql:dbname=TaroAdventure;host=mysql;charset=utf8',
+        'username' => 'taro',
+        'password' => '!QAZxsw2'
+    ],
 ];

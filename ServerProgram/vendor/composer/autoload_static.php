@@ -17,7 +17,6 @@ class ComposerStaticInita279549114b7be96223b05e6cf3edbb8
             'Zend\\Validator\\' => 15,
             'Zend\\Uri\\' => 9,
             'Zend\\Stdlib\\' => 12,
-            'Zend\\SkeletonInstaller\\' => 23,
             'Zend\\ServiceManager\\' => 20,
             'Zend\\Router\\' => 12,
             'Zend\\Mvc\\' => 9,
@@ -38,6 +37,10 @@ class ComposerStaticInita279549114b7be96223b05e6cf3edbb8
             'Zend\\Code\\' => 10,
             'ZF\\DevelopmentMode\\' => 19,
         ),
+        'S' => 
+        array (
+            'Score\\' => 6,
+        ),
         'P' => 
         array (
             'Psr\\Container\\' => 14,
@@ -49,6 +52,7 @@ class ComposerStaticInita279549114b7be96223b05e6cf3edbb8
         'A' => 
         array (
             'Application\\' => 12,
+            'ApplicationTest\\' => 16,
         ),
     );
 
@@ -68,10 +72,6 @@ class ComposerStaticInita279549114b7be96223b05e6cf3edbb8
         'Zend\\Stdlib\\' => 
         array (
             0 => __DIR__ . '/..' . '/zendframework/zend-stdlib/src',
-        ),
-        'Zend\\SkeletonInstaller\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/zendframework/zend-skeleton-installer/src',
         ),
         'Zend\\ServiceManager\\' => 
         array (
@@ -149,6 +149,10 @@ class ComposerStaticInita279549114b7be96223b05e6cf3edbb8
         array (
             0 => __DIR__ . '/..' . '/zfcampus/zf-development-mode/src',
         ),
+        'Score\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/module/Score/src',
+        ),
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
@@ -160,6 +164,10 @@ class ComposerStaticInita279549114b7be96223b05e6cf3edbb8
         'Application\\' => 
         array (
             0 => __DIR__ . '/../..' . '/module/Application/src',
+        ),
+        'ApplicationTest\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/module/Application/test',
         ),
     );
 
