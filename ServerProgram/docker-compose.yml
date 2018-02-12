@@ -23,4 +23,4 @@ services:
     volumes_from:
       - data
     volumes:
-      - ./sql/initial.sql:/docker-entrypoint-initdb.b/initial.sql
+      - ./sql/:/docker-entrypoint-initdb.d/

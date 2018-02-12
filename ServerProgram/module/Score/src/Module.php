@@ -23,7 +23,7 @@ class Module implements ConfigProviderInterface{
                     $dbAdapter = $container->get(AdapterInterface::class);
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Model\Score());
-                    return new Tablegateway('schedule',$dbAdapter,null,$resultSetPrototype);
+                    return new Tablegateway('score',$dbAdapter,null,$resultSetPrototype);
                 }
             ],
         ];
