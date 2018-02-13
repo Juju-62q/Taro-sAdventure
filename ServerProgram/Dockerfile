@@ -9,4 +9,6 @@ RUN apt-get update \
  && curl -sS https://getcomposer.org/installer \
   | php -- --install-dir=/usr/local/bin --filename=composer
 
+RUN yes | pecl install xdebug 
+
 WORKDIR /var/www

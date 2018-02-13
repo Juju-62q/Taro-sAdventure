@@ -12,6 +12,16 @@ $this->headTitle($title);
         <th>スコア</th>
         <th>ユーザ名</th>
         <th>プレイ時間</th>
+        <th></th>
     </tr>
+    <?php foreach ($score as $item) :?>
+    <tr>
+        <th><?php echo $item->id; ?></th>
+        <th><?php echo $item->name;//['id']; ?></th>
+        <th><?php echo $item->score;//['id']; ?></th>
+        <th><?php echo $item->created_at;//['id']; ?></th>
+        <th></th>
+    </tr>
+    <? endforeach;?>
 
 </table>
