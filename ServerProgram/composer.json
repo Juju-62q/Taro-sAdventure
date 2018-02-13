@@ -22,7 +22,6 @@
     },
     "autoload": {
         "psr-4": {
-            "Application\\": "module/Application/src/",
             "Score\\": "module/Score/src/"
         }
     },
