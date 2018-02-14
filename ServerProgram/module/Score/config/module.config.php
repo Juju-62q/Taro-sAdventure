@@ -18,14 +18,14 @@ return[
                     'route'    => '/',
                     'defaults' => [
                         'controller' => Controller\ScoreController::class,
-                        'action'     => 'index',
+                        'action'     => 'edit',
                     ],
                 ],
             ],
             'score' =>[
                 'type' => Segment::class,
                 'options' =>[
-                    'route' => '/[/:action][/:id]',
+                    'route' => '/score[/:action[/:id]]',
                     'constraints' =>[
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[1-9][1-9]*',

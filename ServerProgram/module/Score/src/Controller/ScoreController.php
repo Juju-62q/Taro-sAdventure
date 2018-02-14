@@ -1,10 +1,12 @@
 <?php
 namespace Score\Controller;
 
+use Score\Model\Score;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 use Score\Model\ScoreTable;
+use Score\Form\ScoreForm;
 
 class ScoreController extends AbstractActionController{
 
@@ -20,7 +22,41 @@ class ScoreController extends AbstractActionController{
             'score' => $this->table->fetchAll(),
         ]);
     }
-    public function editAction(){
 
+    public function editAction(){
+        //idがないと困る。ないときはトップにリダイレクト
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if(0 === $id){
+            return $this->redirect()->toRoute('score', ['action' => 'index']);
+        }
+
+        try {
+            $score = $this->table->getScore($id);
+        } catch (\Exception $e) {
+            return $this->redirect()->toRoute('score', ['action' => 'index']);
+        }
+
+
+        $form = new ScoreForm();
+        $form->bind($score);
+        $form->get('submit')->setAttribute('value', 'Edit');
+
+        $request = $this->getRequest();
+        $viewData = ['id' => $id, 'form' => $form];
+
+        if (! $request->isPost()) {
+            return $viewData;
+        }
+
+        $form->setInputFilter($score->getInputFilter());
+        $form->setData($request->getPost());
+
+        if (! $form->isValid()) {
+            return $viewData;
+        }
+
+        $this->table->saveScore($score);
+
+        return $this->redirect()->toRoute('score', ['action' => 'index']);
     }
 }

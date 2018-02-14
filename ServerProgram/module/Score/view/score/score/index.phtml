@@ -17,10 +17,10 @@ $this->headTitle($title);
     <?php foreach ($score as $item) :?>
     <tr>
         <th><?php echo $item->id; ?></th>
-        <th><?php echo $item->name;//['id']; ?></th>
-        <th><?php echo $item->score;//['id']; ?></th>
-        <th><?php echo $item->created_at;//['id']; ?></th>
-        <th></th>
+        <th><?php echo $item->name; ?></th>
+        <th><?php echo $item->score; ?></th>
+        <th><?php echo $item->created_at; ?></th>
+        <th><a href="<?= $this->url('score', ['action' => 'edit', 'id' => $item->id]) ?>">編集</a></th>
     </tr>
     <? endforeach;?>
 
