@@ -52,6 +52,6 @@ class ScoreTable{
     }
 
     public function deleteScore($id){
-        $this->tableGateway->delete(['day' =>$id]);
+        $this->tableGateway->delete(['id' =>$id]);
     }
 }

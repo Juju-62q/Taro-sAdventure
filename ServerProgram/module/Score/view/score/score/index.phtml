@@ -20,7 +20,7 @@ $this->headTitle($title);
         <th><?php echo $item->name; ?></th>
         <th><?php echo $item->score; ?></th>
         <th><?php echo $item->created_at; ?></th>
-        <th><a href="<?= $this->url('score', ['action' => 'edit', 'id' => $item->id]) ?>">編集</a></th>
+        <th><a href="<?= $this->url('score', ['action' => 'edit', 'id' => $item->id]) ?>">編集</a> / <a href="<?= $this->url('score', ['action' => 'delete', 'id' => $item->id]) ?>">削除</a></th>
     </tr>
     <? endforeach;?>
 

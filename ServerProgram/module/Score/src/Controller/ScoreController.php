@@ -59,4 +59,13 @@ class ScoreController extends AbstractActionController{
 
         return $this->redirect()->toRoute('score', ['action' => 'index']);
     }
+
+    public function deleteAction(){
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if(0 === $id){
+            return $this->redirect()->toRoute('score', ['action' => 'index']);
+        }
+        $this->table->deleteScore($id);
+        return $this->redirect()->toRoute('score', ['action' => 'index']);
+    }
 }
