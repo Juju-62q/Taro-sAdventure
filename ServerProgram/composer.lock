@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1b68f9524e64aa0e64ebeb8560110d96",
+    "content-hash": "a130bfd7829f62699ccb01fee4df7acf",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -36,6 +36,104 @@
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
             "time": "2017-02-14T19:40:03+00:00"
+        },
+        {
+            "name": "firebase/php-jwt",
+            "version": "v4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/firebase/php-jwt.git",
+                "reference": "dccf163dc8ed7ed6a00afc06c51ee5186a428d35"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/dccf163dc8ed7ed6a00afc06c51ee5186a428d35",
+                "reference": "dccf163dc8ed7ed6a00afc06c51ee5186a428d35",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Firebase\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Neuman Vong",
+                    "email": "neuman+pear@twilio.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anant Narayanan",
+                    "email": "anant@php.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
+            "homepage": "https://github.com/firebase/php-jwt",
+            "time": "2016-07-18T04:51:16+00:00"
+        },
+        {
+            "name": "multidots/zf3-rest-api",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/multidots/zf3-rest-api.git",
+                "reference": "079c72b0b56ff319e7a34e48b39b0321a1455eee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/multidots/zf3-rest-api/zipball/079c72b0b56ff319e7a34e48b39b0321a1455eee",
+                "reference": "079c72b0b56ff319e7a34e48b39b0321a1455eee",
+                "shasum": ""
+            },
+            "require": {
+                "firebase/php-jwt": "^4.0",
+                "zendframework/zend-json": "^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "zf": {
+                    "module": "RestApi"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "RestApi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Multidots",
+                    "homepage": "http://www.multidots.com",
+                    "role": "Author"
+                },
+                {
+                    "name": "Community",
+                    "homepage": "https://github.com/multidots/zf3-rest-api/graphs/contributors"
+                }
+            ],
+            "description": "Zend Framework 3 module to build REST APIs",
+            "homepage": "https://github.com/multidots/zf3-rest-api",
+            "keywords": [
+                "REST API",
+                "Zend Framework",
+                "cors",
+                "rest",
+                "zf3"
+            ],
+            "time": "2017-05-23T09:23:44+00:00"
         },
         {
             "name": "psr/container",
@@ -1481,7 +1579,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "zendframework/zend-component-installer": 20
+        "zendframework/zend-component-installer": 20,
+        "multidots/zf3-rest-api": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
