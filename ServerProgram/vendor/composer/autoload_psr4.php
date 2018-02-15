@@ -30,8 +30,9 @@ return array(
     'Zend\\Code\\' => array($vendorDir . '/zendframework/zend-code/src'),
     'ZF\\DevelopmentMode\\' => array($vendorDir . '/zfcampus/zf-development-mode/src'),
     'Score\\' => array($baseDir . '/module/Score/src'),
+    'ScoreApi\\' => array($baseDir . '/module/ScoreApi/src'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Interop\\Container\\' => array($vendorDir . '/container-interop/container-interop/src/Interop/Container'),
-    'Application\\' => array($baseDir . '/module/Application/src'),
+    'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'ApplicationTest\\' => array($baseDir . '/module/Application/test'),
 );

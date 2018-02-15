@@ -40,6 +40,7 @@ class ComposerStaticInita279549114b7be96223b05e6cf3edbb8
         'S' => 
         array (
             'Score\\' => 6,
+            'ScoreApi\\' => 9,
         ),
         'P' => 
         array (
@@ -49,9 +50,12 @@ class ComposerStaticInita279549114b7be96223b05e6cf3edbb8
         array (
             'Interop\\Container\\' => 18,
         ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
+        ),
         'A' => 
         array (
-            'Application\\' => 12,
             'ApplicationTest\\' => 16,
         ),
     );
@@ -153,6 +157,10 @@ class ComposerStaticInita279549114b7be96223b05e6cf3edbb8
         array (
             0 => __DIR__ . '/../..' . '/module/Score/src',
         ),
+        'ScoreApi\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/module/ScoreApi/src',
+        ),
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
@@ -161,9 +169,9 @@ class ComposerStaticInita279549114b7be96223b05e6cf3edbb8
         array (
             0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
         ),
-        'Application\\' => 
+        'Firebase\\JWT\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/module/Application/src',
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'ApplicationTest\\' => 
         array (
