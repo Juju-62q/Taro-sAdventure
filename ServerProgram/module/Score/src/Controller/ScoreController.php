@@ -1,6 +1,7 @@
 <?php
 namespace Score\Controller;
 
+use Score\Model\Score;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
