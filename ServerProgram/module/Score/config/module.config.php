@@ -18,7 +18,7 @@ return[
                     'route'    => '/',
                     'defaults' => [
                         'controller' => Controller\ScoreController::class,
-                        'action'     => 'edit',
+                        'action'     => 'index',
                     ],
                 ],
             ],
@@ -54,13 +54,4 @@ return[
             'score' => __DIR__ . '/../view'
         ],
     ],
-];
-
-return [
-    'Zend\Form',
-    'Zend\Db',
-    'Zend\Router',
-    'Zend\Validator',
-    //'Application',
-    'Score',
 ];
