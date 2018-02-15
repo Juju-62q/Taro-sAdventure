@@ -30,6 +30,7 @@ return array(
     'Zend\\Code\\' => array($vendorDir . '/zendframework/zend-code/src'),
     'ZF\\DevelopmentMode\\' => array($vendorDir . '/zfcampus/zf-development-mode/src'),
     'Score\\' => array($baseDir . '/module/Score/src'),
+    'ScoreApi\\' => array($baseDir . '/module/ScoreApi/src'),
     'RestApi\\' => array($vendorDir . '/multidots/zf3-rest-api/src'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Interop\\Container\\' => array($vendorDir . '/container-interop/container-interop/src/Interop/Container'),

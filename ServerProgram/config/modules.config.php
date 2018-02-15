@@ -16,5 +16,6 @@ return [
     'Zend\Router',
     'Zend\Validator',
     'RestApi',
-    'Score'
+    'Score',
+    'ScoreApi'
 ];

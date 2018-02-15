@@ -23,7 +23,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Score\\": "module/Score/src/"
+            "Score\\": "module/Score/src/",
+            "ScoreApi\\": "module/ScoreApi/src/"
         }
     },
     "autoload-dev": {

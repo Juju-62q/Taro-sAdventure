@@ -40,6 +40,7 @@ class ComposerStaticInita279549114b7be96223b05e6cf3edbb8
         'S' => 
         array (
             'Score\\' => 6,
+            'ScoreApi\\' => 9,
         ),
         'R' => 
         array (
@@ -159,6 +160,10 @@ class ComposerStaticInita279549114b7be96223b05e6cf3edbb8
         'Score\\' => 
         array (
             0 => __DIR__ . '/../..' . '/module/Score/src',
+        ),
+        'ScoreApi\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/module/ScoreApi/src',
         ),
         'RestApi\\' => 
         array (
