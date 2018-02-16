@@ -2,6 +2,8 @@
 namespace Score\Model;
 use RuntimeException;
 use Zend\Db\TableGateway\TableGatewayInterface;
+use Zend\Db\Sql\Select;
+
 
 class ScoreTable{
     private $tableGateway;
@@ -53,5 +55,12 @@ class ScoreTable{
 
     public function deleteScore($id){
         $this->tableGateway->delete(['id' =>$id]);
+    }
+
+    public function getHighScore(){
+        return $this->tableGateway->select(
+            function (Select $select) {
+                $select->columns(array('name','score'))->order('score DESC')->limit(1);
+        })->current();
     }
 }

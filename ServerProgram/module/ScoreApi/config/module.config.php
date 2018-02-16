@@ -24,11 +24,11 @@ return [
             ],
         ],
     ],
-    'controllers' => [
+    /*'controllers' => [
         'factories' => [
             Controller\ScoreApiController::class => InvokableFactory::class,
         ],
-    ],
+    ],*/
     'view_manager' => [
         'strategies' => array(
             'ViewJsonStrategy',
