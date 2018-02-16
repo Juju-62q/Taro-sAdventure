@@ -23,7 +23,7 @@ return[
                     'route' => '/score[/:action[/:id]]',
                     'constraints' =>[
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[1-9][1-9]*',
+                        'id' => '[1-9][0-9]*',
                     ],
                     'defaults' => [
                         'controller' => Controller\ScoreController::class,
