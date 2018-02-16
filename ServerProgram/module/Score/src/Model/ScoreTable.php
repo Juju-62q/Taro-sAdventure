@@ -75,4 +75,18 @@ class ScoreTable{
         }
         return $ret;
     }
+
+    public function addScore($score, $name){
+        $values = array(
+            'score'  => $score,
+            'name' => $name,
+        );
+        $this->tableGateway->insert($values);
+
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id' => new \Zend\Db\Sql\Predicate\Expression('COUNT(*) + 1')))->where->greaterThan('score', $score);
+
+        return $this->tableGateway->selectWith($select)->current();
+    }
+
 }
