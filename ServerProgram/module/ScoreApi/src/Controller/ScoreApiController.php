@@ -27,4 +27,18 @@ class ScoreApiController extends ApiController{
 
         return $this->createResponse();
     }
+
+    public function rankingAction()
+    {
+        // your action logic
+        $ranking = $this->table->getRanking();
+
+        // Set the HTTP status code. By default, it is set to 200
+        $this->httpStatusCode = 200;
+
+        // Set the response
+        $this->apiResponse['ranking'] = $ranking;
+
+        return $this->createResponse();
+    }
 }

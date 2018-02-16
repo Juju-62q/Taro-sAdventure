@@ -61,6 +61,18 @@ class ScoreTable{
         return $this->tableGateway->select(
             function (Select $select) {
                 $select->columns(array('name','score'))->order('score DESC')->limit(1);
-        })->current();
+            })->current();
+    }
+
+    public function getRanking(){
+        $data = $this->tableGateway->select(
+            function (Select $select) {
+                $select->order('score DESC')->limit(10);
+            });
+        $ret = array();
+        foreach ($data as $item) {
+            array_push($ret, $item);
+        }
+        return $ret;
     }
 }
