@@ -90,7 +90,7 @@ class ScoreApiController extends ApiController{
         );
 
         $rank = $this->table->getUserHighScore($data['name']);
-        
+
         $this->httpStatusCode = 200;
 
         // Set the response
