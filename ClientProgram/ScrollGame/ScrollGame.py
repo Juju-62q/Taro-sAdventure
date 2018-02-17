@@ -4,7 +4,7 @@ from PyGameScreen import PyGameScreen
 from ScrollGame.Player import Player
 from ScrollGame.Score import Score
 from ScrollGame.Goki import Goki
-import socket,getpass
+import getpass, requests, json
 
 class ScrollGame(PyGameScreen):
 
@@ -159,24 +159,26 @@ class ScrollGame(PyGameScreen):
 
     def gameOver(self):
         userName = getpass.getuser()
-        sendData = "{0} {1} ".format(userName, self.score.score).encode("ascii")
-
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client.connect(("127.0.0.1", 59630))
-        client.sendall(b'4')
-        response = client.recv(4096)
-        #print(response)
-        client.sendall(sendData)
-        response = client.recv(4096).decode("ascii").replace("\x00","")
-        client.close()
+        rank = self.addScore(userName, self.score.score)
 
 
         self.surface.blit(self.bangImage, (self.player.rect.x, self.player.rect.y - 30))
         scoreImage = self.sysFont.render("score is {}".format(self.score.score), True, (255, 255, 255))
-        rankImage = self.sysFont.render("your rank is {}".format(response), True, (255, 255, 255))
+        rankImage = self.sysFont.render("your rank is {}".format(rank), True, (255, 255, 255))
         backToMenu = self.sysFont.render("please press enter to back menu", True, (255, 255, 255))
         self.surface.blit(scoreImage, (200, 250))
         self.surface.blit(rankImage, (200, 300))
         self.surface.blit(backToMenu, (200, 350))
         pygame.display.update()
 
+    def addScore(self, name, score):
+        url = "http://localhost/api/addScore"
+        data = '{{"name":"{}", "score":"{}"}}'.format(name,score)
+        responseBody = requests.post(url, data)
+
+        resultDict = json.loads(responseBody.content)
+
+        if (resultDict['status'] != "OK"):
+            raise Exception
+
+        return resultDict['result']['rank']
