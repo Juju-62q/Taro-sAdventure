@@ -22,7 +22,7 @@ class Score{
 
     public function exchangeArray(array $data){
         $this->id = isset($data['id']) ? $data['id'] : null;
-        $this->score = isset($data['score']) ? $data['score'] : null;
+        $this->score = isset($data['score']) ? $data['score'] : 0;
         $this->name = isset($data['name']) ? $data['name'] : null;
         $this->created_at = isset($data['created_at']) ? $data['created_at'] : null;
     }
