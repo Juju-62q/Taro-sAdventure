@@ -11,7 +11,7 @@ return [
             'score_api' =>[
                 'type' => Segment::class,
                 'options' =>[
-                    'route' => '/api[/:action[/:name]]',
+                    'route' => '/api[/:action]',
                     'constraints' =>[
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'name' => '[a-zA-Z0-9_-]*',

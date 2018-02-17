@@ -92,4 +92,11 @@ class ScoreTable{
         return $this->tableGateway->selectWith($select)->current();
     }
 
+    public function getUserHighScore($name){
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('score'))->order('score DESC')->limit(1)->where->equalTo('name', "$name");
+
+        return $this->tableGateway->selectWith($select)->current();
+    }
+
 }

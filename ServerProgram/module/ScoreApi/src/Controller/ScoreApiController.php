@@ -76,4 +76,26 @@ class ScoreApiController extends ApiController{
 
         return $this->createResponse();
     }
+
+    public function getUserHighScoreAction(){
+        if($this->getRequest()->isGet()){
+            $this->httpStatusCode = 500;
+            return $this->createResponse();
+        }
+
+        // your action logic
+        $data = \Zend\Json\Json::decode(
+            $this->getRequest()->getContent(),
+            \Zend\Json\Json::TYPE_ARRAY
+        );
+
+        $rank = $this->table->getUserHighScore($data['name']);
+
+        $this->httpStatusCode = 200;
+
+        // Set the response
+        $this->apiResponse['score'] = $rank->score;
+
+        return $this->createResponse();
+    }
 }
